@@ -12,5 +12,13 @@ He advises strongly to keep any external light source out, as it will create mor
 
 # Add to sources
 ## Garbage statistics:
+### Country recycle, WtE and landfill percentage
 https://www.oecd-ilibrary.org/docserver/9789264235199-14-en.pdf?expires=1571060119&id=id&accname=ocid42012887&checksum=601FC0601E460DD702D315B71BA5886E 
+### Avfall Norge reports
+https://www.avfallnorge.no/fagomraader-og-faggrupper/rapporter
+
+
+# Problems with my idea
+* Learning camera and spectrometer in the same project is very time consuming. Maybe the focus should have been on one of them. One option is to create a dataset that have spectrometer data as well, but don't analyse it before the master thesis.
+
 
