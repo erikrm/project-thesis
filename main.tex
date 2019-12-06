@@ -3,10 +3,12 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{float}
+\usepackage{lscape}
 
-%User definded commands
+%User defined commands
 \newcommand*\mean[1]{\bar{#1}}
 
+\newcommand*\hadamarddiv{\obslash} %Hadamard division
 
 \title{Project-thesis}
 \author{Erik Rundhovde M\o renskog}
@@ -16,6 +18,8 @@
 
 \maketitle
 
+\tableofcontents
+
 \section{Abstract}
 This thesis will describe how to detect parameters in garbage 
 
@@ -23,35 +27,47 @@ Waste is a huge resource that is in large degrees wasted in todays society. In N
 
 
 \section{Introduction}
-The purpose of the system is to collect information about materials and objects in a manner similar to hyper-spectral imaging. Hyper-spectral imaging is extremely useful for classifying substances from a distance, but it is also very expensive. The setup being proposed in this paper is meant to be a cheaper replacement of the hyper-spectral one. 
+Hyperspectral imaging is extremely useful for classifying substances from a distance, but it is also very expensive. This paper will study if it is possible to use the much cheaper combination of camera and spectrometer instead of a hyperspectral camera in some situations. 
+Hyperspectral imaging is a growing technology for remote sensing. The advantage is that you can get high spectral resolution in  systems are to collect information about materials and objects in a manner similar to hyper-spectral imaging. 
+
+%The setup being proposed in this paper is meant to be a cheaper replacement of the hyper-spectral one.
+
+
+Spectrometry 
+Spectrometer is a widely used tool for analyzing substances. It is a remote sensing tool that give good for
+
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics{figures/pt_setup.pdf}
+    \includegraphics[width=1\textwidth]{figures/pt_setup.png}
     \caption{Measurement setup}
     \label{}
 \end{figure}
 
 
 \section{Theory}
-Spectrometer is a widely used tool for analyzing substances. 
+%Need theory about ccd? It is not really relevant is it?
+%Need theory about the different uses of the same sensor in spectrometer and camera
+
+
+\section{Definitions}
 
 \subsection{Reflection}
 Reflection of light describes the notion of light hitting materials and getting a change of path due to the exchange of energy with the material. 
 
-\subsubsection{Specular}
-\subsubsection{Diffusive}
-\subsection{Relative reflection}
-
+%TODO: Im not sure yet about including these
+%\subsubsection{Specular} 
+%\subsubsection{Diffusive}
+%\subsection{Relative reflection}
 
 \subsection{Image}
-Each image will be stored in a matrix where each element of the matrix is a vector described by (\ref{eq:vector_pixel_bgr}).
+Each image will be stored in a matrix where each element of the matrix is a vector described by (\ref{eq:vector_pixel_bgr}). 
 \begin{equation}
     \label{eq:vector_pixel_bgr}
     \vec{p}_{ij} = [B,G,R]
 \end{equation} 
-The vectors describes the color combination of each pixel, where each color; blue (B), green (G) and red (R) are unsigned integers. The matrix $A_{N\cdot M}$ is shown in (\ref{eq:image_matrix})
+The vectors describes the color combination of each pixel, where each color blue (B), green (G) and red (R) are unsigned integers. The matrix $A_{N\cdot M}$ is shown in (\ref{eq:image_matrix})
 
 \begin{equation}
     \label{eq:image_matrix}
@@ -69,7 +85,14 @@ An important equation later is the to take the spatial average of the matrix, th
 
 \begin{equation}
     \label{eq:spatial_sum}
-    \mean{\vec{p}} = \frac{1}{N^2} \sum_{ij}^N \vec{p_{ij}}
+    \mean{\vec{p}} = \frac{1}{NM} \sum_{i=0}^{N-1} \sum_{j=0}^{M-1} \vec{p_{ij}}
+\end{equation}
+
+Element wise division will be used to compare two pictures, and is defined by the Hadamard division \cite{HadamardDivisionInfixed}:
+
+\begin{equation}
+    \label{eq:element_wise_division_image}
+    A \oslash  A_0  \frac{A_{ij}}{A_{0ij} } %TODO
 \end{equation}
 
 
@@ -87,11 +110,18 @@ The spectrum read from the spectrometer is saved in a $C x 2$ matrix, where $C$ 
     I_0 = I_0(\lambda)
 \end{equation}
 
-We will also define a value (\ref{eq:intensity_0_background}) which is $I$ for the special case where the spectrum is the background spectral response without any objects. From these definitions we define relative reflectance $RR$ (\ref{eq:relative_reflectance})
+We will also define a value (\ref{eq:intensity_0_background}) which is $I$ for the special case where the spectrum is muffin the background spectral response without any objects. From these definitions we define relative reflectance $RR$ (\ref{eq:relative_reflectance}). 
 
 \begin{equation}
     \label{eq:relative_reflectance}
     RR = \frac{I}{I_0}
+\end{equation}
+
+The introduction of (\ref{eq:relative_reflectance_minus_one}) will make it easier to compare the spectrum and camera values.  
+
+\begin{equation}
+    \label{eq:relative_reflectance_minus_one}
+    RR_2 = RR - 1
 \end{equation}
 
 We further introduce the notion of finding the spectrum corresponding to one color in the camera. Each pixel in the camera measures the light intensity for blue, green and red with a certain quantum efficiency (\ref{eq:quantum_efficiency}) given by the manufacturer. 
@@ -125,6 +155,30 @@ The characterization of the light source will be based on considerations from \c
 
 
 \section{Results}
+
+The photos and spectrums where taken inside a lab with no external lights, and the real setup is as shown in figure \ref{fig:picture_of_setup_unlit}. %TODO: Change this figure into the side by side, lit - unlit
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/picture_taking_in_the_dark}
+    \caption{Photo of the setup unlit}
+    \label{fig:picture_of_setup_unlit}
+\end{figure}
+
+
+\subsection{Spetrum of camera}
+Figure \ref{fig:relative_reflection_around_zero} shows nine plots, the first one shows the reference spectrum, the spectrum without any objects. The following eight plots shows the Relative Reflectance (\ref{eq:relative_reflectance}), their 
+
+\begin{landscape}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\paperwidth]{Plots/relative_reflectance_around_zero_with_qe_color_response.png}
+    \caption{Relative reflection centered around zero}
+    \label{fig:relative_reflection_around_zero}
+\end{figure}
+\end{landscape}
+
 
 \subsection{Correlating Spectrometer to Camera}
 
