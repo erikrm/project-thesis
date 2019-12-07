@@ -6,7 +6,7 @@
 \usepackage{lscape}
 
 %User defined commands
-\newcommand*\mean[1]{\bar{#1}}
+\newcommand*\mean[1]{\overline{#1}}
 
 \newcommand*\hadamarddiv{\obslash} %Hadamard division
 
@@ -27,22 +27,15 @@ Waste is a huge resource that is in large degrees wasted in todays society. In N
 
 
 \section{Introduction}
-Hyperspectral imaging is extremely useful for classifying substances from a distance, but it is also very expensive. This paper will study if it is possible to use the much cheaper combination of camera and spectrometer instead of a hyperspectral camera in some situations. 
-Hyperspectral imaging is a growing technology for remote sensing. The advantage is that you can get high spectral resolution in  systems are to collect information about materials and objects in a manner similar to hyper-spectral imaging. 
-
-%The setup being proposed in this paper is meant to be a cheaper replacement of the hyper-spectral one.
+Hyperspectral imaging is extremely useful for classifying substances from a distance, but it is also very expensive. This paper will study if it is possible to use the much cheaper combination of camera and spectrometer instead of a hyperspectral camera in ideal situations. 
+Hyperspectral imaging is a growing technology for remote sensing. The advantage is that you can get high spectral resolution in combination with high spatial resolution, usually 1 dimension for each. The proposed alternative is one where a camera is combined with a spectrometer. The camera will be able to give high spatial resolution in 2D, while the spectrometer will provide high spectral information for the same sample. The theoretical setup is shown in figure \ref{fig:measurement_setup}. 
 
 
-Spectrometry 
-Spectrometer is a widely used tool for analyzing substances. It is a remote sensing tool that give good for
-
-
-
-\begin{figure}[H]
+\begin{figure}[hb]
     \centering
     \includegraphics[width=1\textwidth]{figures/pt_setup.png}
     \caption{Measurement setup}
-    \label{}
+    \label{fig:measurement_setup}
 \end{figure}
 
 
@@ -50,24 +43,52 @@ Spectrometer is a widely used tool for analyzing substances. It is a remote sens
 %Need theory about ccd? It is not really relevant is it?
 %Need theory about the different uses of the same sensor in spectrometer and camera
 
-
-\section{Definitions}
+\subsection{Spectrometry }
+Spectrometer is a widely used tool for analyzing substances. It is a remote sensing tool that give good spectral information about all the light that enter the fiber. Because of this it can be used to give an average spectrum of the area under the acceptance cone of the fiber. 
 
 \subsection{Reflection}
-Reflection of light describes the notion of light hitting materials and getting a change of path due to the exchange of energy with the material. 
+Reflection of light describes the notion of light hitting materials and getting a change of path due to the exchange of energy with the material. There are two extremes when we talked about reflection:
+
+\textbf{Specular reflection} denotes the case where the light is reflected in unison manner from the sample, all in one direction. This concept is shown in figure \ref{fig:specular_reflection}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/theory/Specular-Reflection.png}
+    \caption{Example of specular reflection \cite{SpecularReflectionOcean}}
+    \label{fig:specular_reflection}
+\end{figure}
+
+\textbf{Diffusive reflection} denotes the case where the light is scattered in every direction. This concept is show in figure \ref{fig:diffusive_reflection}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/theory/Diffuse-Reflection.png}
+    \caption{Example of diffusive reflection \cite{DiffuseReflectionOcean}}
+    \label{fig:diffusive_reflection}
+\end{figure}
+
+Both of these reflection types are ideal and all real reflection will be a combination of these two. Not even the best available mirrors exhibit perfectly specular properties. It is however useful to have two extremes to compare the results too. 
+
 
 %TODO: Im not sure yet about including these
 %\subsubsection{Specular} 
 %\subsubsection{Diffusive}
 %\subsection{Relative reflection}
 
+\section{Definitions}
+This section will introduce all the math notation and equations that will be used in the paper. 
+
 \subsection{Image}
-Each image will be stored in a matrix where each element of the matrix is a vector described by (\ref{eq:vector_pixel_bgr}). 
+
+Each pixel of the image will be described by a vector (\ref{eq:vector_pixel_bgr}), where each point on the vector describes one of the colors blue (B), green (G) and red (R).  This together gives the color combination of each pixel. Each color is an unsigned integers. 
+
+
 \begin{equation}
     \label{eq:vector_pixel_bgr}
     \vec{p}_{ij} = [B,G,R]
 \end{equation} 
-The vectors describes the color combination of each pixel, where each color blue (B), green (G) and red (R) are unsigned integers. The matrix $A_{N\cdot M}$ is shown in (\ref{eq:image_matrix})
+
+One whole image will be stored in a matrix where each element of the matrix is a vector described by (\ref{eq:vector_pixel_bgr}). The matrix $A_{N\cdot M}$, where $N$ is the number of rows and $M$ is the number of columns, is shown in (\ref{eq:image_matrix})
 
 \begin{equation}
     \label{eq:image_matrix}
@@ -81,15 +102,19 @@ The vectors describes the color combination of each pixel, where each color blue
     \end{bmatrix}
 \end{equation}
 
-An important equation later is the to take the spatial average of the matrix, this is done with (\ref{eq:spatial_sum}).
+A second matrix to introduce is the special case where the image is the reference image, this special case will be denoted as $A_0$.
 
+\subsubsection{Average}
+
+An important equation later is the one that takes the spatial average of the matrix, this is done with (\ref{eq:spatial_sum}).
 \begin{equation}
     \label{eq:spatial_sum}
-    \mean{\vec{p}} = \frac{1}{NM} \sum_{i=0}^{N-1} \sum_{j=0}^{M-1} \vec{p_{ij}}
+    \mean{\vec{p}} = \frac{1}{NM} \sum_{i=0}^{N-1} \sum_{j=0}^{M-1} \vec{p}_{ij}
 \end{equation}
 
-Element wise division will be used to compare two pictures, and is defined by the Hadamard division \cite{HadamardDivisionInfixed}:
 
+\subsubsection{Hadamard division}
+Element wise division will be used to compare two pictures, and is defined by the Hadamard division \cite{HadamardDivisionInfixed}:
 \begin{equation}
     \label{eq:element_wise_division_image}
     A \oslash  A_0  \frac{A_{ij}}{A_{0ij} } %TODO
@@ -128,11 +153,16 @@ We further introduce the notion of finding the spectrum corresponding to one col
 
 \begin{equation}
     \label{eq:quantum_efficiency}
-    QE = QE(\lambda)    
+    QE_{color} = QE_{color}(\lambda)    
 \end{equation}
 
 This value can theoretically be used to relate the relative picture values with the relative reflectance values. This would be a major advantage as it can give us an insight into the noise factor affecting the sensor fusion.  
+The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the integral of the graph and divide it by the wavelength range (\ref{eq:average_integral}). The trapezoidal rule was used to approximate the integral \cite{TrapezoidRuleMathematical}. 
 
+\begin{equation}
+    \label{eq:average_integral}
+    \mean{RR}_{color} = \frac{1}{\lambda_1 - \lambda_0} \int_{\lambda_0}^{\lambda_1} RR \cdot QE_{color} \,\mathrm{d}\lambda 
+\end{equation}
 
 \section{Method}
 The idea is to use spectrometer methods to analyze images, this will open up for the opportunity to pre-process spectral and spatial data in the same way. We will then be able to compare the data directly. The point of this is to emulate a hyperspectral camera. 
@@ -143,12 +173,17 @@ The idea is to use spectrometer methods to analyze images, this will open up for
 To get an idea of how well calibrated the camera is to the spectrometer and vice versa I propose the following calculation: 
 Take the spatial average across the image from the camera and divide it with the spectral average of the spectrometer. 
 
+\begin{equation}
+    \label{eq:correlating_spectrum_to_camera}
+    K = \frac{\mean{\vec{p}}}{}
+\end{equation}
+
 
 
 \subsection{Light}
-Light is a crucial part of this project, as it is the source of input for both the camera and the spectrometer. It's also the link between the two sensors. The choosing of a sensor that can support both sensor types is therefore paramount. 
+Light is a crucial part of this project, as it is the source of input for both the camera and the spectrometer. It's also the link between the two sensors. The choosing of a sensor that can support both sensor types is therefore paramount. The camera is less selective on the spectral properties of the light source as it only requires a light source that is approximately white, i.e. have similar amounts of red, green and blue "wavelengths". It is however more selective in the spatial region as it can arise more problems for the camera if the lighting creates a lot of shadows or local problems like strong specular reflection making the pixel go into saturation. As implied the spectral properties of the light is more important for the spectrometer. For the spectrometer we want the spectrum to be as flat as possible. 
 
-The characterization of the light source will be based on considerations from \cite{martinPracticalGuideMachine}, but also unfortunately be limited by available sources at the lab. This paper provides a longer checklist, that can be simplified greatly under the following conditions: Stationary objects,
+The characterization of the light source will be based on considerations from \cite{martinPracticalGuideMachine}, but also unfortunately be limited by available sources at the lab. % This paper provides a longer checklist, that can be simplified greatly under the following conditions: Stationary objects,
 
 
 
@@ -167,7 +202,7 @@ The photos and spectrums where taken inside a lab with no external lights, and t
 \end{figure}
 
 
-\subsection{Spetrum of camera}
+\subsection{Spectrum of camera}
 Figure \ref{fig:relative_reflection_around_zero} shows nine plots, the first one shows the reference spectrum, the spectrum without any objects. The following eight plots shows the Relative Reflectance (\ref{eq:relative_reflectance}), their 
 
 \begin{landscape}
