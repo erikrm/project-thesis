@@ -45,7 +45,12 @@ This needs to be in a searchable database.
 The question is if I should use both visible and infrared spectrometer. If I can automate the process of gathering data somewhat, which I should do any way, it wont make much difference in work load to include both. Only in preparation time. I should maybe see if I can get a second camera to document the outside of the setup. 
 
 
-
+## Two methods I'm conflicted about 
+1. Using contours and time dependance to estimate objects going in and out of the picture, and how the spectrometer value changes accordingly
+   This is probably the most efficient way, and the way I believe in the most. But it is a time consuming setup and error prone, as slight shifts in the waste can make it seem like new objects entered the picture. 
+2. Using the pixel values to determine which pixels that are the cause for different part of the spectrum. 
+    It is definetly possible to make classes based on approximate similar rgb values, and link the approach of a new class, or amount in a class to a change in spectrum. The trouble with this is that a material can look different when in a shadow, but I guess we can assume same degree of getting darker for each color, and that the relation will be approximate constant inside and outside of a shadow.
+    Area calculation is still non-trivial as we will have to know the distance to the object.  
 
 # Add to sources
 ## Garbage statistics:
@@ -58,4 +63,5 @@ https://www.avfallnorge.no/fagomraader-og-faggrupper/rapporter
 # Problems with my idea
 * Learning camera and spectrometer in the same project is very time consuming. Maybe the focus should have been on one of them. One option is to create a dataset that have spectrometer data as well, but don't analyse it before the master thesis.
 
+# Pitch
 
