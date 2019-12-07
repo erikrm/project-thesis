@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{float}
 \usepackage{lscape}
+\usepackage{subcaption} %Side by side images
 
 %User defined commands
 \newcommand*\mean[1]{\overline{#1}}
@@ -199,6 +200,43 @@ The photos and spectrums where taken inside a lab with no external lights, and t
     \includegraphics[width=1\textwidth]{figures/picture_taking_in_the_dark}
     \caption{Photo of the setup unlit}
     \label{fig:picture_of_setup_unlit}
+\end{figure}
+
+
+\subsection{Images}
+
+\begin{figure}[h]
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth, height=5cm]{figures/camera_pictures_png/001_background.png}
+        \caption{001 Background, the reference picture}
+        \label{fig:001_background}
+        \end{subfigure}%
+        \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth, height=5cm]{figures/camera_pictures_png/002_blue_cap.png}
+        \caption{002 Blue cap, the photo being analysed}
+        \label{fig:002_blue_cap}
+    \end{subfigure}
+    
+    \caption{Hadamard division}
+    \label{fig:hadamard_division}
+\end{figure}
+
+
+
+\begin{figure}[h]
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth, height=5cm]{figures/processed_camera_pictures/002_blue_cap_negative_difference.png} 
+        \caption{The background divided by the with the blue cap}
+        \label{fig:002_blue_cap_negative_difference}
+        \end{subfigure}%
+        \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth, height=5cm]{figures/processed_camera_pictures/002_blue_cap_positive_difference.png}
+        \caption{The image with the blue cap divided by the background}
+        \label{fig:002_blue_cap_positive_difference}
+    \end{subfigure}
+    
+    \caption{Hadamard division}
+    \label{fig:hadamard_division}
 \end{figure}
 
 
