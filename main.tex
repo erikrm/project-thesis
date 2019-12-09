@@ -166,8 +166,17 @@ The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the int
 \end{equation}
 
 \section{Method}
-The idea is to use spectrometer methods to analyze images, this will open up for the opportunity to pre-process spectral and spatial data in the same way. We will then be able to compare the data directly. The point of this is to emulate a hyperspectral camera. 
+Both the spectrums and the images will be analysed using spectrometer methods, this will open up for the opportunity to pre-process spectral and spatial data in the same way. We will then hopefully be able to compare the data more directly. One problem is that images can only be visualized as three sets of integers between 0 and 255. Therefore we divide the division into to cases, background / image, image /background(reference?)
 
+\subsection{Spectrum processing}
+\label{sec:spectrum_processing}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/thesis_program_flow.pdf}
+    \caption{Spectrum process flow}
+    \label{fig:spectrum_process_flow}
+\end{figure}
 
 \subsection{Correlating Spectrometer to Camera}
 \label{sec:method_correlating_spectrum_to_camera}
@@ -176,7 +185,7 @@ Take the spatial average across the image from the camera and divide it with the
 
 \begin{equation}
     \label{eq:correlating_spectrum_to_camera}
-    K = \frac{\mean{\vec{p}}}{}
+    K = \frac{\mean{\vec{p}}}{\mean{RR-1}}
 \end{equation}
 
 
@@ -187,11 +196,7 @@ Light is a crucial part of this project, as it is the source of input for both t
 The characterization of the light source will be based on considerations from \cite{martinPracticalGuideMachine}, but also unfortunately be limited by available sources at the lab. % This paper provides a longer checklist, that can be simplified greatly under the following conditions: Stationary objects,
 
 
-
-
-
 \section{Results}
-
 The photos and spectrums where taken inside a lab with no external lights, and the real setup is as shown in figure \ref{fig:picture_of_setup_unlit}. %TODO: Change this figure into the side by side, lit - unlit
 
 
