@@ -22,15 +22,14 @@
 \tableofcontents
 
 \section{Abstract}
-This thesis will describe how to detect parameters in garbage 
-
-Waste is a huge resource that is in large degrees wasted in todays society. In Norway 39\% is recycled, 57\% is burned for energy (Waste to energy or WtE) and 2\% goes into landfills \cite{EnvironmentGlance20152015} p.50. This thesis will look into one way of analyzing waste before burning. The idea is to use a spectrometer in the visible range combined with a camera to monitor the waste as it is inserted into the waste can. This will allow us to over time find parameters describing the waste, and possibly the objects the waste consists of. 
+The waste industry is in need of cheaper ways of analyzing waste. This paper will look into if it is feasible to sensor fuse camera and spectrometer as an alternative to hyperspectral cameras. This feasibility is tested by finding three average values that in theory should be proportional too each other between the systems. If these values are proportional to each other it will make the calibration of camera to spectrometer easier.
 
 
 \section{Introduction}
 Hyperspectral imaging is extremely useful for classifying substances from a distance, but it is also very expensive. This paper will study if it is possible to use the much cheaper combination of camera and spectrometer instead of a hyperspectral camera in ideal situations. 
 Hyperspectral imaging is a growing technology for remote sensing. The advantage is that you can get high spectral resolution in combination with high spatial resolution, usually 1 dimension for each. The proposed alternative is one where a camera is combined with a spectrometer. The camera will be able to give high spatial resolution in 2D, while the spectrometer will provide high spectral information for the same sample. The theoretical setup is shown in figure \ref{fig:measurement_setup}. 
 
+%TODO: Add the focus which is finding correlating values between camera and spectrometer
 
 \begin{figure}[hb]
     \centering
@@ -41,11 +40,12 @@ Hyperspectral imaging is a growing technology for remote sensing. The advantage 
 
 
 \section{Theory}
-%Need theory about ccd? It is not really relevant is it?
-%Need theory about the different uses of the same sensor in spectrometer and camera
+%TODO: Need theory about ccd? It is not really relevant is it?
+%Need theory about the different uses of the same sensor in spectrometer and camera, I need this defend that the values should have an correlation. 
 
-\subsection{Spectrometry }
+\subsection{Spectrometry}
 Spectrometer is a widely used tool for analyzing substances. It is a remote sensing tool that give good spectral information about all the light that enter the fiber. Because of this it can be used to give an average spectrum of the area under the acceptance cone of the fiber. 
+%TODO3 Add theory about how the spectrometer works. I could maybe skip this point as it is not necessary for explaining the correlation, but I'm afraid it is necessary for a rigorous description of why the correlation makes sense. Same for the camera
 
 \subsection{Reflection}
 Reflection of light describes the notion of light hitting materials and getting a change of path due to the exchange of energy with the material. There are two extremes when we talked about reflection:
@@ -68,7 +68,7 @@ Reflection of light describes the notion of light hitting materials and getting 
     \label{fig:diffusive_reflection}
 \end{figure}
 
-Both of these reflection types are ideal and all real reflection will be a combination of these two. Not even the best available mirrors exhibit perfectly specular properties. It is however useful to have two extremes to compare the results too. 
+Both of these reflection types are ideal and all real reflection will be a combination of these two. Not even the best available mirrors exhibit perfectly specular properties, and no material scatters light equally in all directions. It is however useful to have two extremes to compare the results too. 
 
 
 %TODO: Im not sure yet about including these
