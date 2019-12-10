@@ -166,7 +166,18 @@ The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the int
 \end{equation}
 
 \section{Method}
-Both the spectrums and the images will be analysed using spectrometer methods, this will open up for the opportunity to pre-process spectral and spatial data in the same way. We will then hopefully be able to compare the data more directly. One problem is that images can only be visualized as three sets of integers between 0 and 255. Therefore we divide the division into to cases, background / image, image /background(reference?)
+Both the spectrums and the images will be analysed using spectrometer methods, this will open up for the opportunity to pre-process spectral and spatial data in the same way. We will then hopefully be able to compare the data more directly. The spectrometer processing method we want to use is relative reflectance ($RR$). Since this method is also being used with the spectrometer, it will be denoted $RR'$ whenever it is used for imaging. As can be seen from (\ref{eq:relative_reflectance}), relative reflectance is done by dividing the interesting values with a reference. The translation to image processing must be to divide every image pixel with a pixel value from a reference image. For comparing values with the spectrometer it is fully ok to do this division as long as the reference image is non-zero for all pixels. For that reason it is important with a well lit and preferably white background. 
+
+
+One problem with this method is that images can only be visualized as three sets of integers between 0 and 255, i.e. the colors blue, green and red. Therefore we divide the division into to two cases when visualizing; reference divided by image and image divided by reference. We will denote the product $RR'_{negative}$ for the reference divided by image case, and $RR'_{positive}$ for the image divided by reference case. The processing can be view in figure \ref{fig:image_visualization_program_flow} 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/image_program_flow.pdf}
+    \caption{Image visualization process flow}
+    \label{fig:image_visualization_program_flow}
+\end{figure}
+
 
 \subsection{Spectrum processing}
 \label{sec:spectrum_processing}
@@ -185,9 +196,17 @@ Take the spatial average across the image from the camera and divide it with the
 
 \begin{equation}
     \label{eq:correlating_spectrum_to_camera}
-    K = \frac{\mean{\vec{p}}}{\mean{RR-1}}
+    K = \frac{\mean{\vec{p}}}{\mean{RR}}
 \end{equation}
 
+This process is shown in figure \ref{fig:correlating_spectrum_and_image}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/image_comparison_with_spectrometer.pdf}
+    \caption{Correlating value between image and spectrum}
+    \label{fig:correlating_spectrum_and_image}
+\end{figure}
 
 
 \subsection{Light}
