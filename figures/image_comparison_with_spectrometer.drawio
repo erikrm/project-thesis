@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2019-12-10T09:43:13.426Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36" etag="3YMT0IY8tDzq1IyvIyI7" version="12.3.9" type="github" pages="1">
+<mxfile host="www.draw.io" modified="2019-12-10T09:46:18.259Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36" etag="5awxoapzfZ52dtTfl9P0" version="12.3.9" type="github" pages="1">
   <diagram id="npbPIhp3O4nb7fUVfA89" name="Page-1">
     <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -128,37 +128,49 @@
             <mxPoint x="507.5" y="230" as="targetPoint"/>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-51" value="&lt;font style=&quot;font-size: 32px&quot;&gt;$$QE_{color}(\lambda)$$&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];;autosize=1;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="357.5" y="265" width="380" height="30" as="geometry"/>
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-51" value="&lt;font style=&quot;font-size: 32px&quot;&gt;$$\vec{QE}(\lambda)$$&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];;autosize=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="345.5" y="260" width="350" height="30" as="geometry"/>
         </mxCell>
         <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontColor=#000000;" edge="1" parent="1" source="ERMoTEU1ZdiAvk5Pcdhp-46" target="ERMoTEU1ZdiAvk5Pcdhp-55">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="386.5" y="345" as="targetPoint"/>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-53" value="&lt;span style=&quot;font-size: 24px&quot;&gt;$$RR_{color}$$&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];;autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="356.5" y="320" width="180" height="20" as="geometry"/>
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-53" value="&lt;span style=&quot;font-size: 24px&quot;&gt;$$\vec{RR}$$&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];;autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="345.5" y="320" width="160" height="20" as="geometry"/>
         </mxCell>
-        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ERMoTEU1ZdiAvk5Pcdhp-54" target="ERMoTEU1ZdiAvk5Pcdhp-56">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-54" value="&lt;font style=&quot;font-size: 32px&quot;&gt;&lt;br&gt;$$\overline{\vec{RR&#39;}}$$&lt;/font&gt;&lt;font color=&quot;#4ec9b0&quot; face=&quot;consolas, courier new, monospace&quot;&gt;&lt;span style=&quot;font-size: 14px ; white-space: pre ; background-color: rgb(30 , 30 , 30)&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-54" value="&lt;font style=&quot;font-size: 32px&quot;&gt;Spatial average&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="128" y="350" width="134" height="80" as="geometry"/>
         </mxCell>
-        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ERMoTEU1ZdiAvk5Pcdhp-55" target="ERMoTEU1ZdiAvk5Pcdhp-56">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-55" value="&lt;font style=&quot;font-size: 32px&quot;&gt;$$\overline{\vec{RR}}$$&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-55" value="&lt;font style=&quot;font-size: 32px&quot;&gt;Spectral average&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="317" y="350" width="140" height="80" as="geometry"/>
         </mxCell>
         <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-56" value="&lt;font style=&quot;font-size: 32px&quot;&gt;Compare&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="216.5" y="500" width="170" height="60" as="geometry"/>
+          <mxGeometry x="206.5" y="530" width="170" height="60" as="geometry"/>
         </mxCell>
         <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ERMoTEU1ZdiAvk5Pcdhp-54" target="ERMoTEU1ZdiAvk5Pcdhp-54">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ERMoTEU1ZdiAvk5Pcdhp-54" target="ERMoTEU1ZdiAvk5Pcdhp-54">
           <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-61" value="&lt;font style=&quot;font-size: 24px&quot;&gt;$$\overline{\vec{RR&#39;}}$$&lt;/font&gt;" style="text;html=1;" vertex="1" parent="1">
+          <mxGeometry x="157" y="420" width="160" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-62" value="&lt;font style=&quot;font-size: 24px&quot;&gt;$$\overline{\vec{RR}}$$&lt;/font&gt;" style="text;html=1;" vertex="1" parent="1">
+          <mxGeometry x="382" y="422" width="150" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-63" value="" style="endArrow=classic;html=1;exitX=0.56;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ERMoTEU1ZdiAvk5Pcdhp-54" target="ERMoTEU1ZdiAvk5Pcdhp-56">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="660" as="sourcePoint"/>
+            <mxPoint x="150" y="610" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ERMoTEU1ZdiAvk5Pcdhp-64" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ERMoTEU1ZdiAvk5Pcdhp-55" target="ERMoTEU1ZdiAvk5Pcdhp-56">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="660" as="sourcePoint"/>
+            <mxPoint x="150" y="610" as="targetPoint"/>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
