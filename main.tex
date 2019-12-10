@@ -143,12 +143,6 @@ We will also define a value (\ref{eq:intensity_0_background}) which is $I$ for t
     RR = \frac{I}{I_0}
 \end{equation}
 
-The introduction of (\ref{eq:relative_reflectance_minus_one}) will make it easier to compare the spectrum and camera values.  
-
-\begin{equation}
-    \label{eq:relative_reflectance_minus_one}
-    RR_2 = RR - 1
-\end{equation}
 
 We further introduce the notion of finding the spectrum corresponding to one color in the camera. Each pixel in the camera measures the light intensity for blue, green and red with a certain quantum efficiency given by the manufacturer. These values will be represented in a vector (\ref{eq:quantum_efficiency}) with three values corresponding to each wavelength $\lambda$. These values will represent how well each color is received by the camera and will be a float between zero and 1. 
 
