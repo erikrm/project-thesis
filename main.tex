@@ -150,11 +150,11 @@ The introduction of (\ref{eq:relative_reflectance_minus_one}) will make it easie
     RR_2 = RR - 1
 \end{equation}
 
-We further introduce the notion of finding the spectrum corresponding to one color in the camera. Each pixel in the camera measures the light intensity for blue, green and red with a certain quantum efficiency (\ref{eq:quantum_efficiency}) given by the manufacturer. 
+We further introduce the notion of finding the spectrum corresponding to one color in the camera. Each pixel in the camera measures the light intensity for blue, green and red with a certain quantum efficiency given by the manufacturer. These values will be represented in a vector (\ref{eq:quantum_efficiency}) with three values corresponding to each wavelength $\lambda$. These values will represent how well each color is received by the camera and will be a float between zero and 1. 
 
 \begin{equation}
     \label{eq:quantum_efficiency}
-    QE_{color} = QE_{color}(\lambda)    
+    \vec{QE}(\lambda)    
 \end{equation}
 
 This value can theoretically be used to relate the relative picture values with the relative reflectance values. This would be a major advantage as it can give us an insight into the noise factor affecting the sensor fusion.  
@@ -162,7 +162,7 @@ The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the int
 
 \begin{equation}
     \label{eq:average_integral}
-    \mean{RR}_{color} = \frac{1}{\lambda_1 - \lambda_0} \int_{\lambda_0}^{\lambda_1} RR \cdot QE_{color} \,\mathrm{d}\lambda 
+    \mean{\vec{RR}} = \frac{1}{\lambda_1 - \lambda_0} \int_{\lambda_0}^{\lambda_1} RR \cdot \vec{QE} \,\mathrm{d}\lambda 
 \end{equation}
 
 \section{Method}
