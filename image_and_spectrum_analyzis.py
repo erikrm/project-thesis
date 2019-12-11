@@ -93,16 +93,33 @@ def load_qe_all_colors(qe_paths):
 def hadamard_division(matrix_divident, matrix_divisor):
     return np.divide(matrix_divident, matrix_divisor)
 
-def interpolate_qe(spectrum_x, spectrum_qe):
-    if np.all(np.diff(spectrum_x) > 0) and np.all(np.diff(spectrum_qe[:,0]) > 0):
-        return np.interp(spectrum_x, spectrum_qe[0,:], spectrum_qe[1,:], left=0.0, right=0.0)
-    else: 
-        print("Not monotonic increasing")
-        print('x.shape:', np.shape(spectrum_x))
-        with np.printoptions(threshold=np.inf):
-            print('x:', spectrum_x)
-        sys.exit(0)
+def interpolate_qe(spectrum_x, spectrum_qe_blue, spectrum_qe_green, spectrum_qe_red):
+    left_value = 0.0
+    right_value = 0.0
 
+    if np.all(np.diff(spectrum_x)<0):
+        print("Spectrum_x is not monotonic increasing")
+        sys.exit(0)
+    elif np.all(np.diff(spectrum_qe_blue[:,0])<0):
+        print("Spectrum qe blue is not monotonic increasing")
+        sys.exit(0)
+    elif np.all(np.diff(spectrum_qe_green[:,0])<0):
+        print("Spectrum qe green is not monotonic increasing")
+        sys.exit(0)
+    elif np.all(np.diff(spectrum_qe_red[:,0])<0):
+        print("Spectrum qe red is not monotonic increasing")
+        sys.exit(0)
+    else:
+        qe_interpolated_shape = spectrum_x.shape + (3,)
+        qe_interpolated = np.zeros(shape=qe_interpolated_shape, dtype=spectrum_qe_blue.dtype)
+
+        qe_interpolated[:,0] = np.interp(spectrum_x, spectrum_qe_blue[:,0], spectrum_qe_blue[:,1], left=left_value, right=right_value)
+        qe_interpolated[:,1] = np.interp(spectrum_x, spectrum_qe_green[:,0], spectrum_qe_green[:,1], left=left_value, right=right_value)
+        qe_interpolated[:,2] = np.interp(spectrum_x, spectrum_qe_red[:,0], spectrum_qe_red[:,1], left=left_value, right=right_value)
+
+        return qe_interpolated
+
+'''   
 def calculate_spectrum_colors(spectrum, qe_spectrums):
     print(np.shape(qe_spectrums))
     sys.exit(0)
@@ -115,6 +132,7 @@ def calculate_spectrum_colors(spectrum, qe_spectrums):
         spectrum_colors.append(spectrum_color)
 
     return spectrum_colors
+'''
 
 def calculate_spatial_average(image):
     return np.average(image, axis=(0,1))
@@ -168,8 +186,12 @@ def show_image_vector(titles, images):
         if wait_user_input():
             break
 
-def plot(title, graph):
-     pyplot.plot(graph[:,0], graph[:,1])
+def plot_qe(title, rr_qe, x_axis):
+    pyplot.title(title)
+    pyplot.plot(x_axis, rr_qe[1,:,0], color="Black")
+    pyplot.plot(x_axis, rr_qe[1,:,1], color="Blue")
+    pyplot.plot(x_axis, rr_qe[1,:,2], color="Green")
+    pyplot.plot(x_axis, rr_qe[1,:,3], color="Red")
 
 
 def main():
@@ -201,41 +223,58 @@ def main():
 
     # Load quantum efficiency
     qe_spectrum_blue, qe_spectrum_green, qe_spectrum_red = load_qe_all_colors(qe_paths)
+
+    # Interpolate qe to the spectrum
+    interpolated_qe = interpolate_qe(spectrums[0,:,0], qe_spectrum_blue, qe_spectrum_green, qe_spectrum_red)
     
     # Relative reflection image
-    RR_images = np.zeros(shape=images.shape, dtype='float64')
-    spatial_average_list = []
+    RR_images = np.zeros(shape=images.shape, dtype='float64') #(#Images, #Rows, #Columns, #Colors)
     i=0
     for image in images:
         RR_images[i] = hadamard_division(image, image_reference)
-
-        # Appending the three average colors for later analysis
-        spatial_average_list.append(calculate_spatial_average(RR_images[i]))
         i=i+1
-    
 
+ 
     # Relative reflection spectrum
-    RR_spectrums = np.zeros(shape=spectrums.shape, dtype=spectrums.dtype)
-    spectral_average_list = []
-    i=0
-    
+    RR_spectrums = np.zeros(shape=(len(spectrums), len(spectrums[0])), dtype=spectrums.dtype)
+
     # Dividing y on the reference y
-    RR_spectrums[:,:,1] = np.divide(spectrums[:,:,1], spectrum_reference[:,1])
-    #Using the same x as before
-    RR_spectrums[:,:,0] = spectrums[:,:,0]
+    RR_spectrums[:,:] = np.divide(spectrums[:,:,1], spectrum_reference[:,1])
+    
+    # We will separate the x_axis from now: 
+    x_lambda = spectrums[0,:,0]
 
-    ## TODO: 
-    spectrum_colors = calculate_spectrum_colors(RR_spectrum, qe_spectrum)
-    spectral_average = calculate_spectral_average(spectrum_colors)
-    spectral_average_list.append(spectral_average)
+    # Find the spectrum that the pixels register
+    RR_qe_shape = RR_spectrums.shape + (3,) # (#spectrums, length of spectrum, # colors, first dim is original)
+    RR_qe = np.zeros(shape=RR_qe_shape, dtype=RR_spectrums.dtype)
+    RR_qe_minus_one = np.array(RR_qe)
 
-    pyplot.plot(RR_spectrums[1,:,0], RR_spectrums[1,:,1])
+    for i in range(len(RR_spectrums)):
+        RR_qe[i,:,0] = RR_spectrums[i,:]
+        RR_qe_minus_one[i,:,0] = RR_spectrums[i,:] - 1 # This one is for visualization purposes, it is much easier to see whats happening when it's centered around zero
+
+        for j in range(1,4):
+            RR_qe[i,:,j]           = np.multiply(RR_spectrums[i,:], interpolated_qe[:,j-1])
+            RR_qe_minus_one[i,:,j] = np.multiply(RR_spectrums[i,:]-1, interpolated_qe[:,j-1])
+
+    # Spatial average across the image
+    spectral_average = np.average(RR_qe, axis=1)
+
+    # Spectral average along all wavelengths
+    spatial_average = np.average(RR_images, axis=(1,2))
+    
+    comparison = hadamard_division(spatial_average, spectral_average[:,1:4])
+
+    print(comparison)
+    
+    # Visualization
+    #plot_qe("Test", RR_qe, x_lambda)
+
+    pyplot.plot(comparison[:,0], "Blue")
+    pyplot.plot(comparison[:,1], "Green")
+    pyplot.plot(comparison[:,2], "Red")
     pyplot.show()
 
-
-    print(spectral_average_list)
-
-    # Visualization
 
     # Hadamard division
     RR_negatives = np.zeros(shape=images.shape, dtype=images.dtype)
