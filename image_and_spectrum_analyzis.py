@@ -250,12 +250,9 @@ def main():
     RR_qe_minus_one = np.array(RR_qe)
 
     for i in range(len(RR_spectrums)):
-        RR_qe[i,:,0] = RR_spectrums[i,:]
-        RR_qe_minus_one[i,:,0] = RR_spectrums[i,:] - 1 # This one is for visualization purposes, it is much easier to see whats happening when it's centered around zero
-
-        for j in range(1,4):
-            RR_qe[i,:,j]           = np.multiply(RR_spectrums[i,:], interpolated_qe[:,j-1])
-            RR_qe_minus_one[i,:,j] = np.multiply(RR_spectrums[i,:]-1, interpolated_qe[:,j-1])
+        for j in range(3):
+            RR_qe[i,:,j]           = np.multiply(RR_spectrums[i,:], interpolated_qe[:,j])
+            RR_qe_minus_one[i,:,j] = np.multiply(RR_spectrums[i,:]-1, interpolated_qe[:,j])
 
     # Spatial average across the image
     spectral_average = np.average(RR_qe, axis=1)
@@ -263,16 +260,15 @@ def main():
     # Spectral average along all wavelengths
     spatial_average = np.average(RR_images, axis=(1,2))
     
-    comparison = hadamard_division(spatial_average, spectral_average[:,1:4])
-
-    print(comparison)
+    comparison = hadamard_division(spatial_average, spectral_average[:,:])
     
     # Visualization
     #plot_qe("Test", RR_qe, x_lambda)
-
-    pyplot.plot(comparison[:,0], "Blue")
-    pyplot.plot(comparison[:,1], "Green")
-    pyplot.plot(comparison[:,2], "Red")
+    print(spectrum_names)
+    pyplot.title("Spatial average divided by spectral average")
+    pyplot.plot(spectrum_names, comparison[:,0], color="Blue")
+    pyplot.plot(spectrum_names, comparison[:,1], color="Green")
+    pyplot.plot(spectrum_names, comparison[:,2], color="Red")
     pyplot.show()
 
 
