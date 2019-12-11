@@ -30,6 +30,7 @@ def load_images(file_paths, reference_path):
     i = 0
     for file_path in file_paths:
         images[i] = cv2.imread(file_path)
+        i = i + 1
 
     return images, reference_image
 
@@ -37,7 +38,7 @@ def load_spectrums(file_paths, reference_path):
     
     dtype = 'float64' #TODO: change to automatical type?
 
-    dataset_length = len(spectrum_paths)
+    dataset_length = len(file_paths)
 
     spectrum_reference = np.loadtxt(reference_path, dtype=dtype, skiprows=17)
 
@@ -45,7 +46,7 @@ def load_spectrums(file_paths, reference_path):
     spectrums = np.zeros(shape=shape_spectrums, dtype=dtype)
 
     for i in range(0,dataset_length):
-        spectrums[i] = np.loadtxt(spectrum_paths[i], skiprows=17, dtype=dtype)
+        spectrums[i] = np.loadtxt(file_paths[i], skiprows=17, dtype=dtype)
 
     return spectrums, spectrum_reference
 
@@ -64,18 +65,62 @@ def load_qe(qe_path):
     #Retrieve x-axis, given by x = sin(angle) * Px * (lambda_total)/px_total_horizontal
 
     x_vector = np.cos(qe_angle_blue[:,1]/180*np.pi) * qe_angle_blue[:,0] *lambda_total/px_total_horizontal + freq_start
+
     y_vector = np.sin(qe_angle_blue[:,1]/180*np.pi) * qe_angle_blue[:,0] * qe_total/px_total_vertical
 
     spectrum_qe = np.array([x_vector, y_vector])
-    return spectrum_qe
+    return np.swapaxes(spectrum_qe, axis1=0, axis2=1)
 
 def load_qe_all_colors(qe_paths):
     spectrum_qe_blue = load_qe(qe_paths[0])
     spectrum_qe_green = load_qe(qe_paths[1])
     spectrum_qe_red = load_qe(qe_paths[2])
 
-    return [spectrum_qe_blue, spectrum_qe_green, spectrum_qe_red]
+    ''' Since they have irregular length it is easiest to keep them seperated until interpolated
+    qe_max_length = max([len(spectrum_qe_blue), len(spectrum_qe_green), len(spectrum_qe_red)])
+    qe_spectrum_shape = (3,) + (qe_max_length,) + (2,)
+    qe_spectrums = np.zeros(shape=qe_spectrum_shape, dtype=spectrum_qe_blue.dtype)
 
+    qe_spectrums[0,:len(spectrum_qe_blue),:] = spectrum_qe_blue
+    qe_spectrums[1,:len(spectrum_qe_green),:] = spectrum_qe_green
+    qe_spectrums[2,:len(spectrum_qe_red),:] = spectrum_qe_red
+    '''
+
+    return spectrum_qe_blue, spectrum_qe_green, spectrum_qe_red
+
+
+# Calculations
+def hadamard_division(matrix_divident, matrix_divisor):
+    return np.divide(matrix_divident, matrix_divisor)
+
+def interpolate_qe(spectrum_x, spectrum_qe):
+    if np.all(np.diff(spectrum_x) > 0) and np.all(np.diff(spectrum_qe[:,0]) > 0):
+        return np.interp(spectrum_x, spectrum_qe[0,:], spectrum_qe[1,:], left=0.0, right=0.0)
+    else: 
+        print("Not monotonic increasing")
+        print('x.shape:', np.shape(spectrum_x))
+        with np.printoptions(threshold=np.inf):
+            print('x:', spectrum_x)
+        sys.exit(0)
+
+def calculate_spectrum_colors(spectrum, qe_spectrums):
+    print(np.shape(qe_spectrums))
+    sys.exit(0)
+    #spectrum_colors_shape = 
+    spectrum_colors = np.zeros()
+
+    for qe_spectrum in qe_spectrums:
+        qe_interpolated = interpolate_qe(spectrum[:,0], qe_spectrum)
+        spectrum_color = spectrum[:,1]*qe_interpolated
+        spectrum_colors.append(spectrum_color)
+
+    return spectrum_colors
+
+def calculate_spatial_average(image):
+    return np.average(image, axis=(0,1))
+
+def calculate_spectral_average(spectrum):
+    return np.average(spectrum, axis=(1))
 
 # Visualization functions:
 def normalize(array):
@@ -88,12 +133,51 @@ def histogram_equalization(array):
     array_norm = normalize(array)
     return np.array(np.round(array_norm*255), dtype="uint8")
 
+def hadamard_two_face(matrix_object, matrix_reference, dark_limit):
+    RR_negative = np.zeros(np.shape(matrix_object), dtype='float64')
+    RR_positive = np.array(RR_negative)
 
-if __name__ == "__main__":
+    RR_negative = (matrix_reference > matrix_object + dark_limit)*(np.divide(matrix_reference, matrix_object))
+    RR_positive = (matrix_object > matrix_reference + dark_limit)*(np.divide(matrix_object, matrix_reference))
+
+    # This function readies images for visualization, therefore it doesn't matter that we are removing information by histogram equalization
+    RR_negative_int = histogram_equalization(RR_negative)
+    RR_positive_int = histogram_equalization(RR_positive)
+
+    return RR_negative_int, RR_positive_int
+
+def wait_user_input():    
+    break_all = False
+    while(True):
+        key = cv2.waitKey(10000)
+        if key == 27:
+            break_all = True
+            break  # esc to quit
+        if key == ord('c'):
+            break
+    return break_all
+
+def show_image(title, image):
+    cv2.imshow(title,image)
+
+def show_image_vector(titles, images):
+    i = 0
+    for image in images:
+        show_image(titles[i], image)
+        i = i + 1
+        if wait_user_input():
+            break
+
+def plot(title, graph):
+     pyplot.plot(graph[:,0], graph[:,1])
+
+
+def main():
     # Variables:
     image_folder_path = ".\\figures\\camera_pictures\\"
     image_file_type = ".bmp"
     image_reference_name = "001_background"
+    image_dark_limit = 10
 
     spectrum_folder_path = ".\\spectrum_files\\"
     spectrum_file_type = ".txt"
@@ -107,7 +191,7 @@ if __name__ == "__main__":
     spectrum_paths, spectrum_names, spectrum_reference_path = list_all_files_in_folder(spectrum_folder_path, spectrum_reference_name, spectrum_file_type)
 
     if spectrum_names != image_names:
-        print("Not all images have spectrums or vise versa")
+        print("Not all images have spectrums or vise versa or not in the correct order")
 
     # Load images
     images, image_reference = load_images(image_paths, image_reference_path)
@@ -116,5 +200,52 @@ if __name__ == "__main__":
     spectrums, spectrum_reference = load_spectrums(spectrum_paths, spectrum_reference_path)
 
     # Load quantum efficiency
-    qe_spectrums = load_qe_all_colors(qe_paths)
+    qe_spectrum_blue, qe_spectrum_green, qe_spectrum_red = load_qe_all_colors(qe_paths)
     
+    # Relative reflection image
+    RR_images = np.zeros(shape=images.shape, dtype='float64')
+    spatial_average_list = []
+    i=0
+    for image in images:
+        RR_images[i] = hadamard_division(image, image_reference)
+
+        # Appending the three average colors for later analysis
+        spatial_average_list.append(calculate_spatial_average(RR_images[i]))
+        i=i+1
+    
+
+    # Relative reflection spectrum
+    RR_spectrums = np.zeros(shape=spectrums.shape, dtype=spectrums.dtype)
+    spectral_average_list = []
+    i=0
+    
+    # Dividing y on the reference y
+    RR_spectrums[:,:,1] = np.divide(spectrums[:,:,1], spectrum_reference[:,1])
+    #Using the same x as before
+    RR_spectrums[:,:,0] = spectrums[:,:,0]
+
+    ## TODO: 
+    spectrum_colors = calculate_spectrum_colors(RR_spectrum, qe_spectrum)
+    spectral_average = calculate_spectral_average(spectrum_colors)
+    spectral_average_list.append(spectral_average)
+
+    pyplot.plot(RR_spectrums[1,:,0], RR_spectrums[1,:,1])
+    pyplot.show()
+
+
+    print(spectral_average_list)
+
+    # Visualization
+
+    # Hadamard division
+    RR_negatives = np.zeros(shape=images.shape, dtype=images.dtype)
+    RR_positives = np.zeros(shape=images.shape, dtype=images.dtype)
+
+    i = 0
+    for image in images:
+        RR_negatives[i], RR_positives[i] = hadamard_two_face(image, image_reference, image_dark_limit)
+        i = i + 1
+    
+
+if __name__ == "__main__":
+    main()
