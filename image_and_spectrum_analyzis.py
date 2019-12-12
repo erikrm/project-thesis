@@ -5,7 +5,6 @@ import sys
 import matplotlib.pyplot as pyplot
 
 # Load functions:
-
 def list_all_files_in_folder(folder_path, reference_name, file_type):
     file_paths = []
     file_names = []
