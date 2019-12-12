@@ -76,18 +76,8 @@ def load_qe_all_colors(qe_paths):
     spectrum_qe_green = load_qe(qe_paths[1])
     spectrum_qe_red = load_qe(qe_paths[2])
 
-    ''' Since they have irregular length it is easiest to keep them seperated until interpolated
-    qe_max_length = max([len(spectrum_qe_blue), len(spectrum_qe_green), len(spectrum_qe_red)])
-    qe_spectrum_shape = (3,) + (qe_max_length,) + (2,)
-    qe_spectrums = np.zeros(shape=qe_spectrum_shape, dtype=spectrum_qe_blue.dtype)
-
-    qe_spectrums[0,:len(spectrum_qe_blue),:] = spectrum_qe_blue
-    qe_spectrums[1,:len(spectrum_qe_green),:] = spectrum_qe_green
-    qe_spectrums[2,:len(spectrum_qe_red),:] = spectrum_qe_red
-    '''
-
+    # Since they have irregular length it is easiest to keep them seperated until interpolated, I want to avoid mixing python list and numpy array
     return spectrum_qe_blue, spectrum_qe_green, spectrum_qe_red
-
 
 # Calculations
 def hadamard_division(matrix_divident, matrix_divisor):
@@ -118,13 +108,6 @@ def interpolate_qe(spectrum_x, spectrum_qe_blue, spectrum_qe_green, spectrum_qe_
         qe_interpolated[:,2] = np.interp(spectrum_x, spectrum_qe_red[:,0], spectrum_qe_red[:,1], left=left_value, right=right_value)
 
         return qe_interpolated
-
-
-def calculate_spatial_average(image):
-    return np.average(image, axis=(0,1))
-
-def calculate_spectral_average(spectrum):
-    return np.average(spectrum, axis=(1))
 
 # Visualization functions:
 def normalize(array):
@@ -210,7 +193,7 @@ def main():
     qe_spectrum_blue, qe_spectrum_green, qe_spectrum_red = load_qe_all_colors(qe_paths)
 
     # Interpolate qe to the spectrum
-    interpolated_qe = interpolate_qe(spectrums[0,:,0], qe_spectrum_blue, qe_spectrum_green, qe_spectrum_red)
+    qe_interpolated = interpolate_qe(spectrums[0,:,0], qe_spectrum_blue, qe_spectrum_green, qe_spectrum_red)
     
     # Relative reflection image
     RR_images = np.zeros(shape=images.shape, dtype='float64') #(#Images, #Rows, #Columns, #Colors)
@@ -219,7 +202,6 @@ def main():
         RR_images[i] = hadamard_division(image, image_reference)
         i=i+1
 
- 
     # Relative reflection spectrum
     RR_spectrums = np.zeros(shape=(len(spectrums), len(spectrums[0])), dtype=spectrums.dtype)
 
@@ -236,8 +218,8 @@ def main():
 
     for i in range(len(RR_spectrums)):
         for j in range(3):
-            RR_qe[i,:,j]           = np.multiply(RR_spectrums[i,:], interpolated_qe[:,j])
-            RR_qe_minus_one[i,:,j] = np.multiply(RR_spectrums[i,:]-1, interpolated_qe[:,j])
+            RR_qe[i,:,j]           = np.multiply(RR_spectrums[i,:], qe_interpolated[:,j])
+            RR_qe_minus_one[i,:,j] = np.multiply(RR_spectrums[i,:]-1, qe_interpolated[:,j])
 
     # Spatial average across the image
     spectral_average = np.average(RR_qe, axis=1)
@@ -245,13 +227,14 @@ def main():
     # Spectral average along all wavelengths
     spatial_average = np.average(RR_images, axis=(1,2))
     
-    comparison = hadamard_division(spatial_average, spectral_average[:,:])
+    # To compare the spatial average with the spectral average we divide on upon the other
+    comparison = hadamard_division(spatial_average, spectral_average)
     
     # Visualization
     #plot_bgr("Test", RR_qe[0], x_lambda)
-    #title = "Spatial average divided by spectral average"
-    #plot_bgr(title, comparison, spectrum_names)
-    #pyplot.show()
+    title = "Spatial average divided by spectral average"
+    plot_bgr(title, comparison, spectrum_names)
+    pyplot.show()
 
 
     # Hadamard division
@@ -262,8 +245,7 @@ def main():
     for image in images:
         RR_negatives[i], RR_positives[i] = hadamard_two_face(image, image_reference, image_dark_limit)
         i=i+1
-    
-    
+
 
 
 if __name__ == "__main__":
