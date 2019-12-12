@@ -1,0 +1,88 @@
+\section{Definitions}
+This section will introduce all the math notation and equations that will be used in the paper. 
+
+\subsection{Image}
+
+Each pixel of the image will be described by a vector (\ref{eq:vector_pixel_bgr}), where each point on the vector describes one of the colors blue (B), green (G) and red (R).  This together gives the color combination of each pixel. Each color is an unsigned integers. 
+
+
+\begin{equation}
+    \label{eq:vector_pixel_bgr}
+    \vec{p}_{ij} = [B,G,R]
+\end{equation} 
+
+One whole image will be stored in a matrix where each element of the matrix is a vector described by (\ref{eq:vector_pixel_bgr}). The matrix $A_{N\cdot M}$, where $N$ is the number of rows and $M$ is the number of columns, is shown in (\ref{eq:image_matrix})
+
+\begin{equation}
+    \label{eq:image_matrix}
+    A = A_{N\cdot M} =  
+    \begin{bmatrix}
+        \vec{p}_{11} & \vec{p}_{12} & \cdots & & \vec{p}_{1M}  \\
+        \vec{p}_{21} & \ddots &        &       &                \\
+        \vdots       &        &\vec{p}_{ij}&   & \vdots          \\
+                     &        &        & \ddots&                  \\
+        \vec{p}_{N1} &        &        &       & \vec{p}_{NM}  
+    \end{bmatrix}
+\end{equation}
+
+A second matrix to introduce is the special case where the image is the reference image, this special case will be denoted as $A_0$.
+
+\subsubsection{Average}
+
+An important equation later is the one that takes the spatial average of the matrix, this is done with (\ref{eq:spatial_sum}).
+\begin{equation}
+    \label{eq:spatial_sum}
+    \mean{\vec{p}} = \frac{1}{NM} \sum_{i=0}^{N-1} \sum_{j=0}^{M-1} \vec{p}_{ij}
+\end{equation}
+
+
+\subsubsection{Hadamard division}
+Element wise division will be used to compare two pictures, and is defined by the Hadamard division \cite{HadamardDivisionInfixed}:
+\begin{equation}
+    \label{eq:element_wise_division_image}
+    A \oslash  A_0  \frac{A_{ij}}{A_{0ij} } %TODO
+\end{equation}
+
+
+\subsection{Spectrum}
+\label{sec:spectrum}
+
+The spectrum read from the spectrometer is saved in a $C x 2$ matrix, where $C$ is the dataset length, the first column is the wavelength ($\lambda$) and the second column is the corresponding intensity (\ref{eq:intensity})
+\begin{equation}
+    \label{eq:intensity}
+    I = I(\lambda)    
+\end{equation}
+
+\begin{equation}
+    \label{eq:intensity_0_background}
+    I_0 = I_0(\lambda)
+\end{equation}
+
+We will also define a value (\ref{eq:intensity_0_background}) which is $I$ for the special case where the spectrum is muffin the background spectral response without any objects. From these definitions we define relative reflectance $RR$ (\ref{eq:relative_reflectance}). 
+
+\begin{equation}
+    \label{eq:relative_reflectance}
+    RR = \frac{I}{I_0}
+\end{equation}
+
+
+The introduction of (\ref{eq:relative_reflectance_minus_one}) will make it easier see the changes in the spectrum when multiplying with QE.  
+\begin{equation}
+    \label{eq:relative_reflectance_minus_one}
+    RR_2 = RR - 1
+\end{equation}
+
+We further introduce the notion of finding the spectrum corresponding to one color in the camera. Each pixel in the camera measures the light intensity for blue, green and red with a certain quantum efficiency given by the manufacturer. These values will be represented in a vector (\ref{eq:quantum_efficiency}) with three values corresponding to each wavelength $\lambda$. These values will represent how well each color is received by the camera and will be a float between zero and 1. 
+
+\begin{equation}
+    \label{eq:quantum_efficiency}
+    \vec{QE}(\lambda)    
+\end{equation}
+
+This value can theoretically be used to relate the relative picture values with the relative reflectance values. This would be a major advantage as it can give us an insight into the noise factor affecting the sensor fusion.  
+The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the integral of the graph and divide it by the wavelength range (\ref{eq:average_integral}). The trapezoidal rule was used to approximate the integral \cite{TrapezoidRuleMathematical}. 
+
+\begin{equation}
+    \label{eq:average_integral}
+    \mean{\vec{RR}} = \frac{1}{\lambda_1 - \lambda_0} \int_{\lambda_0}^{\lambda_1} RR \cdot \vec{QE} \,\mathrm{d}\lambda 
+\end{equation}
