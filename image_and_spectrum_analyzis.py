@@ -154,12 +154,19 @@ def show_image_vector(titles, images):
         if wait_user_input():
             break
 
-def plot_bgr(title, spectrum_bgr, x_axis):
-    pyplot.title(title)
-    pyplot.plot(x_axis, spectrum_bgr[:,0], color="Blue")
-    pyplot.plot(x_axis, spectrum_bgr[:,1], color="Green")
-    pyplot.plot(x_axis, spectrum_bgr[:,2], color="Red")
+def plot_bgr(title, subplot, x_axis, spectrum_bgr):
+    subplot.set_title(title)
+    subplot.plot(x_axis, spectrum_bgr[:,0], color="Blue")
+    subplot.plot(x_axis, spectrum_bgr[:,1], color="Green")
+    subplot.plot(x_axis, spectrum_bgr[:,2], color="Red")
 
+def plot_bgr_bgr(title, subplot, x_spectrum_bgr, y_spectrum_bgr, x_label, y_label):
+    subplot.set_title(title)
+    subplot.set_xlabel(x_label)
+    subplot.set_ylabel(y_label)
+    subplot.scatter(x_spectrum_bgr[:,0], y_spectrum_bgr[:,0], color="Blue")
+    subplot.scatter(x_spectrum_bgr[:,1], y_spectrum_bgr[:,1], color="Green")
+    subplot.scatter(x_spectrum_bgr[:,2], y_spectrum_bgr[:,2], color="Red")
 
 def main():
     # Variables:
@@ -231,12 +238,46 @@ def main():
     
     # Visualization
     #plot_bgr("Test", RR_qe[0], x_lambda)
-    title = "Spatial average divided by spectral average"
-    plot_bgr(title, comparison, spectrum_names)
+    n_columns = 1
+    n_rows = 1
+    i_subplot = 0
+
+    fig, subplots = pyplot.subplots(nrows=n_rows,ncols=n_columns, sharex=True)
+
+    plot_comparison = False
+    plot_spectral_average = False
+    plot_spatial_average = False
+    plot_spectral_vs_spatial = True
+
+    if plot_comparison:
+        title = "Spatial average divided by spectral average"
+        plot_bgr(title, subplots[i_subplot], spectrum_names, comparison)
+        i_subplot=i_subplot+1
+
+    if plot_spectral_average:
+        title = "Spectral average"
+        plot_bgr(title, subplots[i_subplot], spectral_average, spectrum_names)
+        i_subplot=i_subplot+1
+    
+    if plot_spatial_average:
+        title = "Spatial average"
+        plot_bgr(title, subplots[i_subplot], spatial_average, spectrum_names)
+        i_subplot=i_subplot+1
+    
+    if plot_spectral_vs_spatial:
+        title = "Spectral vs spatial average"
+        x_label = "Spatial average"
+        y_label = "Spectral average"
+        plot_bgr_bgr(title, subplots, spatial_average, spectral_average, x_label, y_label)
+        i_subplot=i_subplot+1
+
+
     pyplot.show()
 
 
+
     # Hadamard division
+    '''
     RR_negatives = np.zeros(shape=images.shape, dtype=images.dtype)
     RR_positives = np.zeros(shape=images.shape, dtype=images.dtype)
 
@@ -245,7 +286,7 @@ def main():
         RR_negatives[i], RR_positives[i] = hadamard_two_face(image, image_reference, image_dark_limit)
         i=i+1
 
-
+    '''
 
 if __name__ == "__main__":
     main()
