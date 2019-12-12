@@ -119,20 +119,6 @@ def interpolate_qe(spectrum_x, spectrum_qe_blue, spectrum_qe_green, spectrum_qe_
 
         return qe_interpolated
 
-'''   
-def calculate_spectrum_colors(spectrum, qe_spectrums):
-    print(np.shape(qe_spectrums))
-    sys.exit(0)
-    #spectrum_colors_shape = 
-    spectrum_colors = np.zeros()
-
-    for qe_spectrum in qe_spectrums:
-        qe_interpolated = interpolate_qe(spectrum[:,0], qe_spectrum)
-        spectrum_color = spectrum[:,1]*qe_interpolated
-        spectrum_colors.append(spectrum_color)
-
-    return spectrum_colors
-'''
 
 def calculate_spatial_average(image):
     return np.average(image, axis=(0,1))
@@ -186,12 +172,11 @@ def show_image_vector(titles, images):
         if wait_user_input():
             break
 
-def plot_qe(title, rr_qe, x_axis):
+def plot_bgr(title, spectrum_bgr, x_axis):
     pyplot.title(title)
-    pyplot.plot(x_axis, rr_qe[1,:,0], color="Black")
-    pyplot.plot(x_axis, rr_qe[1,:,1], color="Blue")
-    pyplot.plot(x_axis, rr_qe[1,:,2], color="Green")
-    pyplot.plot(x_axis, rr_qe[1,:,3], color="Red")
+    pyplot.plot(x_axis, spectrum_bgr[:,0], color="Blue")
+    pyplot.plot(x_axis, spectrum_bgr[:,1], color="Green")
+    pyplot.plot(x_axis, spectrum_bgr[:,2], color="Red")
 
 
 def main():
@@ -263,13 +248,10 @@ def main():
     comparison = hadamard_division(spatial_average, spectral_average[:,:])
     
     # Visualization
-    #plot_qe("Test", RR_qe, x_lambda)
-    print(spectrum_names)
-    pyplot.title("Spatial average divided by spectral average")
-    pyplot.plot(spectrum_names, comparison[:,0], color="Blue")
-    pyplot.plot(spectrum_names, comparison[:,1], color="Green")
-    pyplot.plot(spectrum_names, comparison[:,2], color="Red")
-    pyplot.show()
+    #plot_bgr("Test", RR_qe[0], x_lambda)
+    #title = "Spatial average divided by spectral average"
+    #plot_bgr(title, comparison, spectrum_names)
+    #pyplot.show()
 
 
     # Hadamard division
@@ -279,8 +261,10 @@ def main():
     i = 0
     for image in images:
         RR_negatives[i], RR_positives[i] = hadamard_two_face(image, image_reference, image_dark_limit)
-        i = i + 1
+        i=i+1
     
+    
+
 
 if __name__ == "__main__":
     main()
