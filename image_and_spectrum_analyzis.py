@@ -249,10 +249,10 @@ def main():
     plot_comparison = False
     plot_spectral_average = False
     plot_spatial_average = False
-    plot_spectral_vs_spatial = False
+    plot_spectral_vs_spatial = True
     plot_qe_interpolated = False
     plot_qe_blue_cap = False
-    plot_blue_cap_and_reference = True
+    plot_blue_cap_and_reference = False
 
     if plot_comparison:
         title = "Spatial average divided by spectral average"
@@ -272,11 +272,11 @@ def main():
         title = "Spatial average"
         y_label = "Spatial average"
         x_label = "Spectrum names"
-        plot_bgr(title, subplots[i_subplot], spatial_average, spectrum_names, x_label, y_label)
+        plot_bgr(title, subplots, spatial_average, spectrum_names, x_label, y_label)
         i_subplot=i_subplot+1
     
     if plot_spectral_vs_spatial:
-        title = "Spectral vs spatial average"
+        title = ""
         x_label = "Spatial average"
         y_label = "Spectral average"
         plot_bgr_bgr(title, subplots, spatial_average, spectral_average, x_label, y_label)
