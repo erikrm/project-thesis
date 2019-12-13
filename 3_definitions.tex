@@ -27,7 +27,8 @@ One whole image will be stored in a matrix where each element of the matrix is a
 
 A second matrix to introduce is the special case where the image is the reference image, this special case will be denoted as $A_0$.
 
-\subsubsection{Average}
+\subsubsection{Spatial average}
+\label{sec:spatial_average}
 
 An important equation later is the one that takes the spatial average of the matrix, this is done with (\ref{eq:spatial_sum}).
 \begin{equation}
@@ -80,6 +81,10 @@ We further introduce the notion of finding the spectrum corresponding to one col
 \end{equation}
 
 This value can theoretically be used to relate the relative picture values with the relative reflectance values. This would be a major advantage as it can give us an insight into the noise factor affecting the sensor fusion.  
+
+\subsubsection{Sectral average}
+\label{sec:spectral_average}
+
 The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the integral of the graph and divide it by the wavelength range (\ref{eq:average_integral}). The trapezoidal rule was used to approximate the integral \cite{TrapezoidRuleMathematical}. 
 
 \begin{equation}
