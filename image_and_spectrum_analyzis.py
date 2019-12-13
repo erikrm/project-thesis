@@ -238,6 +238,25 @@ def main():
     # To compare the spatial average with the spectral average we divide on upon the other
     comparison = hadamard_division(spatial_average, spectral_average)
     
+    # Linear regression to spectral vs spatial for each color independently
+    #Ax = y, A = [x_vec, 1_vec], y = [y_vec], x = [ax, b]
+    #A = [spatial_average, 1_vec], y = [spectral_average]
+    print(spectrum_names)
+    #Blue:
+    regression_A_blue = np.vstack([spatial_average[:,0], np.ones(len(spatial_average[:,0]))]).T
+    regression_y_blue = spectral_average[:,0].T
+    regression_a_blue, regression_b_blue = np.linalg.lstsq(regression_A_blue, regression_y_blue, rcond=None)[0]
+
+    #Green:
+    regression_A_green = np.vstack([spatial_average[:,1], np.ones(len(spatial_average[:,1]))]).T
+    regression_y_green = spectral_average[:,1].T
+    regression_a_green, regression_b_green = np.linalg.lstsq(regression_A_green, regression_y_green, rcond=None)[0]
+
+    #Red:
+    regression_A_red = np.vstack([spatial_average[:,2], np.ones(len(spatial_average[:,2]))]).T
+    regression_y_red = spectral_average[:,2].T
+    regression_a_red, regression_b_red = np.linalg.lstsq(regression_A_red, regression_y_red, rcond=None)[0]
+
     # Visualization
     #plot_bgr("Test", RR_qe[0], x_lambda)
     n_columns = 1
@@ -249,7 +268,8 @@ def main():
     plot_comparison = False
     plot_spectral_average = False
     plot_spatial_average = False
-    plot_spectral_vs_spatial = True
+    plot_spectral_vs_spatial = False
+    plot_spectral_vs_spatial_with_regression = True
     plot_qe_interpolated = False
     plot_qe_blue_cap = False
     plot_blue_cap_and_reference = False
@@ -282,6 +302,23 @@ def main():
         plot_bgr_bgr(title, subplots, spatial_average, spectral_average, x_label, y_label)
         i_subplot=i_subplot+1
 
+    if plot_spectral_vs_spatial_with_regression:
+        title = ""
+        x_label = "Spatial average"
+        y_label = "Spectral average"
+        plot_bgr_bgr(title, subplots, spatial_average, spectral_average, x_label, y_label)
+
+        blue_label = "%fx + %f" % (regression_a_blue, regression_b_blue)
+        green_label = "%fx + %f" % (regression_a_green, regression_b_green)
+        red_label = "%fx + %f" % (regression_a_red, regression_b_red)
+
+        subplots.plot(spatial_average[:,0], regression_a_blue*spatial_average[:,0] + regression_b_blue, color="blue", label=blue_label)
+        subplots.plot(spatial_average[:,0], regression_a_green*spatial_average[:,0] + regression_b_green, color="green", label=green_label)
+        subplots.plot(spatial_average[:,0], regression_a_red*spatial_average[:,0] + regression_b_red, color="red", label=red_label)
+
+        subplots.legend()
+
+    
     if plot_qe_interpolated:
         title = "Quantum Efficiency"
         x_label = r'Wavelength($\lambda$)'
