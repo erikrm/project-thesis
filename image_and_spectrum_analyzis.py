@@ -119,12 +119,12 @@ def histogram_equalization(array):
     array_norm = normalize(array)
     return np.array(np.round(array_norm*255), dtype="uint8")
 
-def hadamard_two_face(matrix_object, matrix_reference, dark_limit):
+def hadamard_two_face(matrix_object, matrix_reference, noise_limit):
     RR_negative = np.zeros(np.shape(matrix_object), dtype='float64')
     RR_positive = np.array(RR_negative)
 
-    RR_negative = (matrix_reference > matrix_object + dark_limit)*(np.divide(matrix_reference, matrix_object))
-    RR_positive = (matrix_object > matrix_reference + dark_limit)*(np.divide(matrix_object, matrix_reference))
+    RR_negative = (matrix_reference > matrix_object + noise_limit)*(np.divide(matrix_reference, matrix_object))
+    RR_positive = (matrix_object > matrix_reference + noise_limit)*(np.divide(matrix_object, matrix_reference))
 
     # This function readies images for visualization, therefore it doesn't matter that we are removing information by histogram equalization
     RR_negative_int = histogram_equalization(RR_negative)
@@ -154,8 +154,10 @@ def show_image_vector(titles, images):
         if wait_user_input():
             break
 
-def plot_bgr(title, subplot, x_axis, spectrum_bgr):
+def plot_bgr(title, subplot, x_axis, spectrum_bgr, x_label, y_label):
     subplot.set_title(title)
+    subplot.set_xlabel(x_label)
+    subplot.set_ylabel(y_label)
     subplot.plot(x_axis, spectrum_bgr[:,0], color="Blue")
     subplot.plot(x_axis, spectrum_bgr[:,1], color="Green")
     subplot.plot(x_axis, spectrum_bgr[:,2], color="Red")
@@ -173,7 +175,7 @@ def main():
     image_folder_path = ".\\figures\\camera_pictures\\"
     image_file_type = ".bmp"
     image_reference_name = "001_background"
-    image_dark_limit = 10
+    image_noise_limit = 10
 
     spectrum_folder_path = ".\\spectrum_files\\"
     spectrum_file_type = ".txt"
@@ -247,21 +249,30 @@ def main():
     plot_comparison = False
     plot_spectral_average = False
     plot_spatial_average = False
-    plot_spectral_vs_spatial = True
+    plot_spectral_vs_spatial = False
+    plot_qe_interpolated = False
+    plot_qe_blue_cap = False
+    plot_blue_cap_and_reference = True
 
     if plot_comparison:
         title = "Spatial average divided by spectral average"
-        plot_bgr(title, subplots[i_subplot], spectrum_names, comparison)
+        y_label = "Spatial/spectral average"
+        x_label = "Spectrum names"
+        plot_bgr(title, subplots[i_subplot], spectrum_names, comparison, x_label, y_label)
         i_subplot=i_subplot+1
 
     if plot_spectral_average:
         title = "Spectral average"
-        plot_bgr(title, subplots[i_subplot], spectral_average, spectrum_names)
+        y_label = "Spectral average"
+        x_label = "Spectrum names"
+        plot_bgr(title, subplots[i_subplot], spectral_average, spectrum_names, x_label, y_label)
         i_subplot=i_subplot+1
     
     if plot_spatial_average:
         title = "Spatial average"
-        plot_bgr(title, subplots[i_subplot], spatial_average, spectrum_names)
+        y_label = "Spatial average"
+        x_label = "Spectrum names"
+        plot_bgr(title, subplots[i_subplot], spatial_average, spectrum_names, x_label, y_label)
         i_subplot=i_subplot+1
     
     if plot_spectral_vs_spatial:
@@ -270,6 +281,27 @@ def main():
         y_label = "Spectral average"
         plot_bgr_bgr(title, subplots, spatial_average, spectral_average, x_label, y_label)
         i_subplot=i_subplot+1
+
+    if plot_qe_interpolated:
+        title = "Quantum Efficiency"
+        x_label = r'Wavelength($\lambda$)'
+        y_label = "QE"
+        plot_bgr(title,subplots,x_lambda,qe_interpolated, x_label, y_label)
+
+    if plot_qe_blue_cap:    
+        title = ""
+        x_label = r'Wavelength($\lambda$)'
+        y_label = "RR-1"
+        plot_bgr(title,subplots,x_lambda,RR_qe_minus_one[0], x_label, y_label)
+        subplots.plot(x_lambda, RR_spectrums[0,:]-1, color="black")
+
+    if plot_blue_cap_and_reference:
+        x_label = r'Wavelength($\lambda$)'
+        y_label = "Photon count"
+        subplots.plot(x_lambda, spectrums[0,:,1], color="Blue")
+        subplots.plot(spectrum_reference[:,0], spectrum_reference[:,1], color="Black")
+        subplots.set_xlabel(x_label)
+        subplots.set_ylabel(y_label)
 
 
     pyplot.show()
@@ -283,7 +315,7 @@ def main():
 
     i = 0
     for image in images:
-        RR_negatives[i], RR_positives[i] = hadamard_two_face(image, image_reference, image_dark_limit)
+        RR_negatives[i], RR_positives[i] = hadamard_two_face(image, image_reference, image_noise_limit)
         i=i+1
 
     '''
