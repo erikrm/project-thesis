@@ -1,17 +1,17 @@
-\section{Results}
+\section{Discussion}
 
 \subsection{Blue cap}
 \label{sec:blue_cap_discussion}
 The picture of the blue cap will be used as a basement for discussion about the image processing. 
 
-Figure \ref{fig:002_blue_cap_positive_difference} shows what colors in what pixels have gotten more light after the blue cap was introduced. It is of no surprise that blue is the dominant here, but there are also some spots that have a strong white color. 
+Figure \ref{fig:002_blue_cap_positive_difference} shows what colors in what pixels have gotten more light after the blue cap was introduced. It is of no surprise that blue is the dominant here, but there are also some spots that have a strong white color. This is due to the difference between specular and diffusive reflection introduced in section \ref{sec:theory_reflection}. 
+
+Specular reflection reflects in the same direction and will for that reason give a stronger signal than diffusive where it hits. It will however only hit if the angle between the light source, the object and the camera is just so. It is because of the strong reflection that it appears white, all three of the color sensors have reached their limit and is given out the maximum value. Specular reflection will only appear in the $RR'_{positive}$ image. 
+
+For more diffusive parts however the light is spread in several directions and the return value to the camera is therefore weaker and it is not normal to over expose these reflections. Diffusive reflectance shows up in both $RR'_{positive}$ and $RR'_{negative}$. It is what gives us the most color to work with. 
 
 
 \subsection{Spectrum of camera}
-Figure \ref{fig:relative_reflection_around_zero} shows nine plots, the first one shows the reference spectrum, the spectrum without any objects. The following eight plots shows the Relative Reflectance (\ref{eq:relative_reflectance}), their 
-
-
-
 
 \subsection{Correlating Spectrometer to Camera}
 

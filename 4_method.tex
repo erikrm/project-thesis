@@ -99,11 +99,22 @@ Figure \ref{fig:002_blue_cap_positive_difference} shows what colors in what pixe
 
 \subsection{Spectrum processing}
 
-The spectrum was analysed in a similar manner, but here it was not necessary for visualization to split it into two results. It was however needed to subtract 1 from the results so that it was easy to compare the spectrums before and after multiplying with QE to each other. It also helped for comparison with the image. Figure \ref{fig:blue_cap_spectrum} shows relative reflectance minus one for the blue cap. It also includes the spectrums that the camera "sees", 
+The spectrum was analysed in a similar manner, but here it was not necessary for the sake of visualization to split it into two results. It was however needed to subtract 1 from the results so that it was easy to compare the spectrums before and after multiplying with QE to each other. It also helped for comparison with the image. 
+The recorded spectrums for the reference image and the blue cap is shown in figure \ref{fig:blue_cap_and_reference_spectrum}. The black line is the reference background spectrum, and the blue line is the line when the blue cap is introduced. 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Plots/blue_cap_rr_minus_one_with_qe.png}    
+    \includegraphics[width=0.75\textwidth]{Plots/blue_cap_original_spectrum_and_background.png}
+    \caption{Comparison of blue cap (blue) and reference specter (black)}
+    \label{fig:blue_cap_and_reference_spectrum}
+\end{figure}
+
+
+Figure \ref{fig:blue_cap_spectrum} shows relative reflectance minus one for the blue cap. It also includes the spectrums that the camera "sees" for each color, i.e. the wavelength parts and their respective magnitudes that is taken in by the CCD sensor. They are shown in their original colors; blue, green and red. The quantum efficiency used is shown in figure \ref{fig:quantum_efficiency_camera} in the appendix. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Plots/blue_cap_rr_minus_one_with_qe.png}    
     \caption{Spectrum of blue cap}
     \label{fig:blue_cap_spectrum}
 \end{figure}
