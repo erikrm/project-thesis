@@ -108,6 +108,40 @@ def interpolate_qe(spectrum_x, spectrum_qe_blue, spectrum_qe_green, spectrum_qe_
 
         return qe_interpolated
 
+# Error function
+def distance_point_to_line(point, line_a, line_b):
+    '''Line on the form y = ax + b'''
+    # First point at x=0
+    p_0 = np.array([0, line_b]) 
+    # Second point at x=1
+    p_1 = np.array([1,line_a + line_b])
+    # Vector for the line, made by getting a point at x = 1: 
+    l = np.subtract(p_1, p_0)
+    # Unit vector l
+    l_hat = l/np.linalg.norm(l, ord=2) # Taking the second norm, i.e. the Euclidean distance
+    
+    return np.abs(np.cross(np.subtract(point,p_0), l_hat))
+
+def sum_distance_points_to_line(points, line_a, line_b):
+    sum = 0
+    for point in points:
+        sum = sum + distance_point_to_line(point, line_a, line_b) 
+    return sum
+
+def distances_points_to_line(points, line_a, line_b):
+    distance_vector = []
+    for point in points:
+        distance_vector.append(distance_point_to_line(point, line_a, line_b))
+    return distance_vector
+
+def error_average_function(points, line_a, line_b):
+    return sum_distance_points_to_line(points, line_a, line_b)/len(points)
+
+def error_variance_function(points, line_a, line_b):
+    distance_vector = distances_points_to_line(points, line_a, line_b)
+    return np.var(distance_vector)
+
+
 # Visualization functions:
 def normalize(array):
     amax = np.amax(array)
@@ -174,12 +208,12 @@ def main():
     # Variables:
     image_folder_path = ".\\figures\\camera_pictures\\"
     image_file_type = ".bmp"
-    image_reference_name = "001_background"
+    image_reference_name = "011_background"
     image_noise_limit = 10
 
     spectrum_folder_path = ".\\spectrum_files\\"
     spectrum_file_type = ".txt"
-    spectrum_reference_name = "001_background"
+    spectrum_reference_name = "011_background"
     qe_paths = [".\\qe_spectrum\\QE_angle_blue.txt", ".\\qe_spectrum\\QE_angle_green.txt", ".\\qe_spectrum\\QE_angle_red.txt"]
 
     # Find images
@@ -241,7 +275,7 @@ def main():
     # Linear regression to spectral vs spatial for each color independently
     #Ax = y, A = [x_vec, 1_vec], y = [y_vec], x = [ax, b]
     #A = [spatial_average, 1_vec], y = [spectral_average]
-    print(spectrum_names)
+
     #Blue:
     regression_A_blue = np.vstack([spatial_average[:,0], np.ones(len(spatial_average[:,0]))]).T
     regression_y_blue = spectral_average[:,0].T
@@ -340,6 +374,28 @@ def main():
         subplots.set_xlabel(x_label)
         subplots.set_ylabel(y_label)
 
+    
+    #outfile = np.vstack([spatial_average[:,0], spectral_average[:,0], spatial_average[:,1], spectral_average[:,1], spatial_average[:,2], spectral_average[:,2]])
+    #outfile_path = ".\\spectral_vs_spatial_values_reference_001.txt"
+    #np.savetxt(outfile_path, outfile.T, fmt='%.18f')
+
+    
+
+    points_blue = np.vstack([spatial_average[:,0], spectral_average[:,0]])
+    points_green = np.vstack([spatial_average[:,1], spectral_average[:,1]])
+    points_red = np.vstack([spatial_average[:,2], spectral_average[:,2]])
+
+    # These functions are incredible slow, but it's not going to be a big dataset
+    error_average_blue = error_average_function(points_blue.T, regression_a_blue, regression_b_blue)
+    error_average_green = error_average_function(points_green.T, regression_a_green, regression_b_green)
+    error_average_red = error_average_function(points_red.T, regression_a_red, regression_b_red)
+
+    error_variance_blue = error_variance_function(points_blue.T, regression_a_blue, regression_b_blue)
+    error_variance_green = error_variance_function(points_green.T, regression_a_green, regression_b_green)
+    error_variance_red = error_variance_function(points_red.T, regression_a_red, regression_b_red)
+
+    print("avg blue", error_average_blue, "avg green", error_average_green, "avg red", error_average_red)
+    print("var blue", error_variance_blue, "var green", error_variance_green, "var red", error_variance_red)
 
     pyplot.show()
 
