@@ -2,8 +2,20 @@
 %TODO: Need theory about ccd? It is not really relevant is it?
 %Need theory about the different uses of the same sensor in spectrometer and camera, I need this defend that the values should have an correlation. 
 
+\subsection{Camera}
+Cameras are widely used to photograph objects, and works by focusing light onto a photo-sensor. The camera used in this thesis uses a CCD photo-sensor.
+
 \subsection{Spectrometry}
-Spectrometer is a widely used tool for analyzing substances. It is a remote sensing tool that give good spectral information about all the light that enter the fiber. Because of this it can be used to give an average spectrum of the area under the acceptance cone of the fiber. 
+Spectrometer is a widely used tool for analyzing substances. It is a remote sensing tool that give good spectral information about the light that enters the fiber. As can be seen in figure \ref{fig:spectrometer_inside} the light is split into the different wavelengths before hitting the CCD sensor. This has the effect that the sensor reads spectral information instead of spatial as a camera would. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/Mini-spectrometer-open-bench.png}
+    \caption{Inside of a spectrometer \cite{KAI0340640480}}
+    \label{fig:spectrometer_inside}
+\end{figure}
+
+Because of this it can be used to give an average spectrum of the area under the acceptance cone of the fiber. 
 %TODO3 Add theory about how the spectrometer works. I could maybe skip this point as it is not necessary for explaining the correlation, but I'm afraid it is necessary for a rigorous description of why the correlation makes sense. Same for the camera
 
 \subsection{Reflection}

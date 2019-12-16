@@ -7,9 +7,15 @@
 \usepackage{subcaption} %Side by side images
 \usepackage[a4paper, margin=3cm]{geometry}
 
+% Fancy tables
+\usepackage{booktabs}
+
 % Code viewing
 \usepackage{listings}
 \usepackage{color}
+
+% Table of contents control: 
+\usepackage{setspace}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -89,6 +95,7 @@
     Supervised by Harald Ian Muri and Dag Roar Hjelme
 \end{titlepage}
 
+\singlespacing
 \tableofcontents
 
 \section{Abstract}
@@ -111,6 +118,6 @@ It has proven very hard to correlate spectrometer and camera values that should 
 \bibliographystyle{plain}
 \bibliography{references.bib}
 
-\input{9_appendix.tex}
+% \input{9_appendix.tex}
 
 \end{document}

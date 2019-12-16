@@ -101,3 +101,13 @@ The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the int
     \label{eq:average_integral}
     \mean{\vec{RR}} = \frac{1}{\lambda_1 - \lambda_0} \int_{\lambda_0}^{\lambda_1} RR \cdot \vec{QE} \,\mathrm{d}\lambda 
 \end{equation}
+
+
+\subsubsection{Error function}
+\label{sec:error_function}
+To have an idea of how well an estimation works, an error function can be used. The function that will be used here takes the Euclidean distance between a data-point and the closest point in the estimation. The estimation will be a straight line in this setup, so the minimum distance between a point and the line can be found using the cross product. This function works by using three points, two of them should be points on the line ($p_0$ and $p_1$), and one should be the data point ($p$). The function is given in (\ref{eq:error_function}), where $\left\lVert .\right\rVert$ shows the second norm. 
+
+\begin{equation}
+    \label{eq:error_function}
+    d = \frac{(p - p_0) \times (p_1 - p_0)}{\left\lVert p_1 - p_0\right\rVert _2}
+\end{equation}
