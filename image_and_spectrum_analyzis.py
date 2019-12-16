@@ -8,6 +8,7 @@ import matplotlib.pyplot as pyplot
 def list_all_files_in_folder(folder_path, reference_name, file_type):
     file_paths = []
     file_names = []
+    reference_path = None
 
     for filename in os.listdir(folder_path):
 
@@ -18,6 +19,15 @@ def list_all_files_in_folder(folder_path, reference_name, file_type):
                 full_path = os.path.join(folder_path, filename)
                 file_paths.append(full_path)
                 file_names.append(filename.replace(file_type,''))
+    
+    if reference_path is None: 
+        parent_directory = os.path.join(folder_path, os.pardir)
+        for filename in os.listdir(parent_directory):
+            if filename.endswith(file_type) and reference_name in filename:
+                reference_path = os.path.join(parent_directory, filename)
+
+    if reference_path is None: 
+        print("Reference path still None")
 
     return file_paths, file_names, reference_path
 
@@ -206,12 +216,12 @@ def plot_bgr_bgr(title, subplot, x_spectrum_bgr, y_spectrum_bgr, x_label, y_labe
 
 def main():
     # Variables:
-    image_folder_path = ".\\figures\\camera_pictures\\"
+    image_folder_path = ".\\figures\\camera_pictures\\ambient_light"
     image_file_type = ".bmp"
     image_reference_name = "011_background"
     image_noise_limit = 10
 
-    spectrum_folder_path = ".\\spectrum_files\\"
+    spectrum_folder_path = ".\\spectrum_files\\ambient_light"
     spectrum_file_type = ".txt"
     spectrum_reference_name = "011_background"
     qe_paths = [".\\qe_spectrum\\QE_angle_blue.txt", ".\\qe_spectrum\\QE_angle_green.txt", ".\\qe_spectrum\\QE_angle_red.txt"]
@@ -276,6 +286,7 @@ def main():
     #Ax = y, A = [x_vec, 1_vec], y = [y_vec], x = [ax, b]
     #A = [spatial_average, 1_vec], y = [spectral_average]
 
+    '''
     #Blue:
     regression_A_blue = np.vstack([spatial_average[:,0], np.ones(len(spatial_average[:,0]))]).T
     regression_y_blue = spectral_average[:,0].T
@@ -290,6 +301,20 @@ def main():
     regression_A_red = np.vstack([spatial_average[:,2], np.ones(len(spatial_average[:,2]))]).T
     regression_y_red = spectral_average[:,2].T
     regression_a_red, regression_b_red = np.linalg.lstsq(regression_A_red, regression_y_red, rcond=None)[0]
+    '''
+
+    #Blue: 
+    regression_a_blue = 0.047585
+    regression_b_blue = 0.026289
+
+
+    #Green: 
+    regression_a_green = 0.040544
+    regression_b_green = 0.023220
+    
+    #Red: 
+    regression_a_red = 0.047299
+    regression_b_red = 0.034605
 
     # Visualization
     #plot_bgr("Test", RR_qe[0], x_lambda)
