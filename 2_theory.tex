@@ -3,7 +3,7 @@
 %Need theory about the different uses of the same sensor in spectrometer and camera, I need this defend that the values should have an correlation. 
 
 \subsection{Camera}
-Cameras are widely used to photograph objects, and works by focusing light onto a photo-sensor. The camera used in this thesis uses a CCD photo-sensor.
+Cameras are widely used to photograph objects, and works by focusing light onto a photo-sensor. The camera used in this thesis uses a Charged-coupled device (CCD) photo-sensor \cite{JYIVolumeThree}.
 
 \subsection{Spectrometry}
 Spectrometer is a widely used tool for analyzing substances. It is a remote sensing tool that give good spectral information about the light that enters the fiber. As can be seen in figure \ref{fig:spectrometer_inside} the light is split into the different wavelengths before hitting the CCD sensor. This has the effect that the sensor reads spectral information instead of spatial as a camera would. 
@@ -20,9 +20,9 @@ Because of this it can be used to give an average spectrum of the area under the
 
 \subsection{Reflection}
 \label{sec:theory_reflection}
-Reflection of light describes the notion of light hitting materials and getting a change of path due to the exchange of energy with the material. There are two extremes when we talked about reflection:
+Reflection of light describes the notion of light hitting materials and getting a change of path due to the exchange of energy with the material. There are two extremes when we talk about reflection:
 
-\textbf{Specular reflection} denotes the case where the light is reflected in unison manner from the sample, all in one direction. This concept is shown in figure \ref{fig:specular_reflection}.
+\textbf{Specular reflection} denotes the case where the light is reflected in a unison manner from the sample, all in one direction. This concept is shown in figure \ref{fig:specular_reflection}.
 
 \begin{figure}[h!]
     \centering
@@ -31,7 +31,7 @@ Reflection of light describes the notion of light hitting materials and getting 
     \label{fig:specular_reflection}
 \end{figure}
 
-\textbf{Diffusive reflection} denotes the case where the light is scattered in every direction. This concept is show in figure \ref{fig:diffusive_reflection}.
+\textbf{Diffusive reflection} denotes the case where the light is scattered in every direction. This concept is shown in figure \ref{fig:diffusive_reflection}.
 
 \begin{figure}[h!]
     \centering
@@ -40,7 +40,7 @@ Reflection of light describes the notion of light hitting materials and getting 
     \label{fig:diffusive_reflection}
 \end{figure}
 
-Both of these reflection types are ideal and all real reflection will be a combination of these two. Not even the best available mirrors exhibit perfectly specular properties, and no material scatters light equally in all directions. It is however useful to have two extremes to compare the results too. 
+Both of these reflection types are ideal and all real reflection will be a combination of these two. Not even the best available mirrors exhibit perfect specular properties, and no material scatters light equally in all directions. It is however useful to have two extremes to compare the results too. 
 
 %TODO: Im not sure yet about including these
 %\subsubsection{Specular} 
@@ -48,7 +48,10 @@ Both of these reflection types are ideal and all real reflection will be a combi
 %\subsection{Relative reflection}
 
 \subsection{Noise and dark current}
-Both the images and the spectrums will have noise in them, making the readings less accurate. 
+\label{sec:noise_and_dark_current}
+Both the images and the spectrums will have noise in them, making the readings less accurate. One type of noise that is a problem in spectrometry is noise from dark currents. These are currents that will be detected in the CCD sensor even though there is no incoming light. 
+
+
 
 %TODO: Should add:
 % Linear regression
