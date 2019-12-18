@@ -25,14 +25,9 @@ One problem with this method is that images can only be visualized as three sets
 \subsection{Correlating Spectrometer to Camera}
 \label{sec:method_correlating_spectrum_to_camera}
 To get an idea of how well calibrated the camera is to the spectrometer and vice versa I propose the following calculation: 
-Take the spatial average across the image from the camera and divide it with the spectral average of the spectrometer. 
+Take the spatial average across the image from the camera and compare it with the spectral average of the spectrometer. This comparison should be done by plotting the spectral average values of the spectrums on the y-axis, and the spatial average values on the x-axis. This allows for any correlation to be easily spotted. 
 
-\begin{equation}
-    \label{eq:correlating_spectrum_to_camera}
-    K = \frac{\mean{\vec{p}}}{\mean{RR}}
-\end{equation}
-
-This process is shown in figure \ref{fig:correlating_spectrum_and_image}.
+The process of comparing is shown in figure \ref{fig:correlating_spectrum_and_image}. The $\oslash$ symbol denotes the Hadamard division that was introduced in section \ref{sec:hadamard_division}, and the $\otimes$ symbol was introduced in \ref{sec:hadamard_product}. 
 
 \begin{figure}[h]
     \centering
@@ -43,20 +38,51 @@ This process is shown in figure \ref{fig:correlating_spectrum_and_image}.
 
 
 \subsection{Light}
-Light is a crucial part of this project, as it is the source of input for both the camera and the spectrometer. It's also the link between the two sensors. The choosing of a sensor that can support both sensor types is therefore paramount. The camera is less selective on the spectral properties of the light source as it only requires a light source that is approximately white, i.e. have similar amounts of red, green and blue "wavelengths". It is however more selective in the spatial region as it can arise more problems for the camera if the lighting creates a lot of shadows or local problems like strong specular reflection making the pixel go into saturation. As implied the spectral properties of the light is more important for the spectrometer. For the spectrometer we want the spectrum to be as flat as possible. 
+Light is a crucial part of this project, as it is the source of input for both the camera and the spectrometer. It's also the link between the two sensors. The choosing of a light source that can support both sensor types is therefore paramount. The camera is less selective on the spectral properties of the light source as it only requires a light source that is approximately white, i.e. have similar amounts of red, green and blue "wavelengths". It is however more selective in the spatial region as it can arise more problems for the camera if the lighting creates a lot of shadows or local problems like strong specular reflection making the pixel go into saturation. As implied the spectral properties of the light is more important for the spectrometer. For the spectrometer we want the spectrum to be as flat as possible. 
 
-The characterization of the light source will be based on considerations from \cite{martinPracticalGuideMachine}, but also unfortunately be limited by available sources at the lab. % This paper provides a longer checklist, that can be simplified greatly under the following conditions: Stationary objects,
-
+%TODO: The characterization of the light source will be based on considerations from \cite{martinPracticalGuideMachine}, but also unfortunately be limited by available sources at the lab.
+ % This paper provides a longer checklist, that can be simplified greatly under the following conditions: Stationary objects,
 
 \section{Experimental setup}
-The photos and spectrums where taken inside a lab with no external lights, and the real setup is as shown in figure \ref{fig:picture_of_setup_unlit}. %TODO: Change this figure into the side by side, lit - unlit
+The photos and spectrums where taken inside a lab with no external lights, and the real setup is as shown in figure \ref{fig:picture_of_setup_unlit}. Both the fiber and the camera points towards the black square, the camera view fits exactly in the black square. To see approximate view angle of the fiber, red light is sent through fibers laying around the core fiber. The result is figure \ref{fig:picture_of_setup_red} which show with red light the area of the acceptance cone. The red area will probably be slightly larger than the acceptance cone due to it being made by multiple fibers around the core fiber. 
+
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.3\textwidth]{figures/picture_taking_in_the_dark}
-    \caption{Photo of the setup unlit}
-    \label{fig:picture_of_setup_unlit}
+    \begin{subfigure}{0.3333\textwidth}
+        \centering
+        \includegraphics[width=0.95\linewidth]{figures/project_setup_lit.png}
+        \caption{Lit room.}
+        \label{fig:picture_of_setup_lit}
+    \end{subfigure}%
+    \begin{subfigure}{0.3333\textwidth}
+        \centering
+        \includegraphics[width=0.95\linewidth]{figures/project_setup_unlit.png}
+        \caption{No ambient light.}
+        \label{fig:picture_of_setup_unlit}
+    \end{subfigure}%
+    \begin{subfigure}{0.3333\textwidth}
+        \centering
+        \includegraphics[width=0.95\linewidth]{figures/project_setup_red.png}
+        \caption{Red light sent through the fiber.}
+        \label{fig:picture_of_setup_red}
+    \end{subfigure}
+    \caption{Photo of the setup used to take images and spectrums}
+    \label{fig:blue_cap_and_background}
 \end{figure}
+
+\subsection{Utilities}
+The equipment used in the experiment are listed in table 
+
+%TODO make an equipment table
+\begin{table}[]
+    \begin{tabular}{lll}
+    Equipment name & Serial number & Usage \\
+                   &               &       \\
+                   &               &       \\
+                   &               &       \\
+                   &               &      
+    \end{tabular}
+\end{table}
 
 \subsection{Image processing}
 
@@ -99,8 +125,8 @@ Figure \ref{fig:002_blue_cap_positive_difference} shows what colors in what pixe
 
 \subsection{Spectrum processing}
 
-The spectrum was analysed in a similar manner, but here it was not necessary for the sake of visualization to split it into two results. It was however needed to subtract 1 from the results so that it was easy to compare the spectrums before and after multiplying with QE to each other. It also helped for comparison with the image. 
-The recorded spectrums for the reference image and the blue cap is shown in figure \ref{fig:blue_cap_and_reference_spectrum}. The black line is the reference background spectrum, and the blue line is the line when the blue cap is introduced. 
+The spectrum was analysed in a similar manner, but here it was not necessary for the sake of visualization to split it into two results. It was however needed to subtract 1 from the results so that it was easy to compare the spectrums before and after multiplying with QE to each other (\ref{eq:relative_reflectance_minus_one}). It also helped for comparison with the image. 
+The recorded spectrums for the reference image and the blue cap are shown in figure \ref{fig:blue_cap_and_reference_spectrum}. The black line is the reference background spectrum, and the blue line is the line when the blue cap is introduced. 
 
 \begin{figure}[h]
     \centering
@@ -109,8 +135,15 @@ The recorded spectrums for the reference image and the blue cap is shown in figu
     \label{fig:blue_cap_and_reference_spectrum}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Plots/quantum_effiency.png}
+    \caption{The quantum efficiency of the camera Bayer mask}
+    \label{fig:quantum_efficiency_camera}
+\end{figure}
 
-Figure \ref{fig:blue_cap_spectrum} shows relative reflectance minus one for the blue cap. It also includes the spectrums that the camera "sees" for each color, i.e. the wavelength parts and their respective magnitudes that is taken in by the CCD sensor. They are shown in their original colors; blue, green and red. The quantum efficiency used is shown in figure \ref{fig:quantum_efficiency_camera} in the appendix. 
+
+Figure \ref{fig:blue_cap_spectrum} shows relative reflectance minus one for the blue cap. It also includes the spectrums that the camera "sees" for each color, i.e. the wavelength parts and their respective magnitudes that is taken in by the CCD sensor. They are shown in their original colors; blue, green and red. The quantum efficiency used is shown in figure \ref{fig:quantum_efficiency_camera}. 
 
 \begin{figure}[h]
     \centering
@@ -122,7 +155,7 @@ Figure \ref{fig:blue_cap_spectrum} shows relative reflectance minus one for the 
 \subsection{Spatial and spectral average}
 \label{sec:spatial_and_spectral_average}
 
-To correlate the image and the spectrum, and to get a value that describes how equal what they are seeing is, the spatial and spectral average will be used. They where introduced in section \ref{sec:spatial_average} (spatial) and section \ref{sec:spectral_average} (spectral). The idea behind using these values is that they should be linearly related to each other. %TODO1: Elaborate here while 
+To correlate the image and the spectrum, and to get a value that describes how equal what they are seeing is, the spatial and spectral average will be used. They where introduced in section \ref{sec:spatial_average} (spatial) and section \ref{sec:spectral_average} (spectral). %The idea behind using these values is that they should be linearly related to each other. %TODO1: Elaborate here while 
 
 \subsection{Discussion of process method}
 
@@ -132,13 +165,7 @@ The picture of the blue cap will be used as a basement for discussion about the 
 
 Figure \ref{fig:002_blue_cap_positive_difference} shows what colors in what pixels have gotten more light after the blue cap was introduced. It is of no surprise that blue is the dominant here, but there are also some spots that have a strong white color. This is due to the difference between specular and diffusive reflection introduced in section \ref{sec:theory_reflection}. 
 
-Specular reflection reflects in the same direction and will for that reason give a stronger signal than diffusive where it hits. It will however only hit if the angle between the light source, the object and the camera is just so. It is because of the strong reflection that it appears white, all three of the color sensors have reached their limit and is given out the maximum value. Specular reflection will only appear in the $RR'_{positive}$ image. 
+Specular reflection reflects in the same direction and will for that reason give a stronger signal than diffusive when it hits the camera. It will however only hit if the angle between the light source, the object and the camera is just so. It is because of the strong reflection that it appears white, all three of the color sensors have reached their limit and is given out the maximum value. Specular reflection will only appear in the $RR'_{positive}$ image. 
 
 For more diffusive parts however the light is spread in several directions and the return value to the camera is therefore weaker and it is not normal to over expose these reflections. Diffusive reflectance shows up in both $RR'_{positive}$ and $RR'_{negative}$. It is what gives us the most color to work with. 
 
-
-\subsection{Spectrum of camera}
-
-\subsection{Correlating Spectrometer to Camera}
-
-After processing the images and spectrum as shown in figure \ref{fig:correlating_spectrum_and_image} 

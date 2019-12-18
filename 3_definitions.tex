@@ -45,9 +45,17 @@ An important equation later is the one that takes the spatial average of the mat
     \mean{\vec{p}} = \frac{1}{N \cdot M} \sum_{i=0}^{N-1} \sum_{j=0}^{M-1} \vec{p}_{ij}
 \end{equation}
 
+\subsubsection{Hadamard product}
+\label{sec:hadamard_product}
+Element wise multiplication will be used to combine the quantum efficiency (QE) with the spectrum, it is defined by the Hadamard product \cite{millionIntroductionBasicResults} and shown in ()
+\begin{equation}
+    \label{eq:element_wise_product_spectrum}
+    RR \otimes QE \doteq RR_i \cdot QE_i
+\end{equation}
 
 \subsubsection{Hadamard division}
-Element wise division will be used to compare two pictures, and is defined by the Hadamard division \cite{HadamardDivisionInfixed}:
+\label{sec:hadamard_division}
+Element wise division will be used to compare two pictures, and is defined by the Hadamard division \cite{HadamardDivisionInfixed} and shown in (\ref{eq:element_wise_division_image}).
 \begin{equation}
     \label{eq:element_wise_division_image}
     A \oslash  A_0 \doteq  \frac{A_{ij}}{A_{0ij} } %TODO
