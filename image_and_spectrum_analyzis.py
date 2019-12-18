@@ -216,14 +216,14 @@ def plot_bgr_bgr(title, subplot, x_spectrum_bgr, y_spectrum_bgr, x_label, y_labe
 
 def main():
     # Variables:
-    image_folder_path = ".\\figures\\camera_pictures\\ambient_light"
+    image_folder_path = ".\\figures\\camera_pictures"
     image_file_type = ".bmp"
-    image_reference_name = "011_background"
+    image_reference_name = "001_background"
     image_noise_limit = 10
 
-    spectrum_folder_path = ".\\spectrum_files\\ambient_light"
+    spectrum_folder_path = ".\\spectrum_files"
     spectrum_file_type = ".txt"
-    spectrum_reference_name = "011_background"
+    spectrum_reference_name = "001_background"
     qe_paths = [".\\qe_spectrum\\QE_angle_blue.txt", ".\\qe_spectrum\\QE_angle_green.txt", ".\\qe_spectrum\\QE_angle_red.txt"]
 
     # Find images
@@ -328,10 +328,10 @@ def main():
     plot_spectral_average = False
     plot_spatial_average = False
     plot_spectral_vs_spatial = False
-    plot_spectral_vs_spatial_with_regression = True
+    plot_spectral_vs_spatial_with_regression = False
     plot_qe_interpolated = False
-    plot_qe_blue_cap = False
-    plot_blue_cap_and_reference = False
+    plot_qe_blue_cap = True
+    plot_blue_cap_and_reference = False 
 
     if plot_comparison:
         title = "Spatial average divided by spectral average"
@@ -390,6 +390,7 @@ def main():
         y_label = "RR-1"
         plot_bgr(title,subplots,x_lambda,RR_qe_minus_one[0], x_label, y_label)
         subplots.plot(x_lambda, RR_spectrums[0,:]-1, color="black")
+        subplots.legend(['Blue pixel', 'Green pixel', 'Red pixel', 'Total spectrum'])
 
     if plot_blue_cap_and_reference:
         x_label = r'Wavelength($\lambda$)'
