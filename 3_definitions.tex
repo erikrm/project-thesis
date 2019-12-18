@@ -3,13 +3,12 @@ This section will introduce all the math notation and equations that will be use
 
 \subsection{Linear regression}
 \label{sec:regression}
-Linear regression is a technique to find the function of the form (\ref{eq:linear_function}) that have the minimum total square distance to the points in the set. 
+Linear regression is a technique to find the function of the form (\ref{eq:linear_function}) that have the minimum mean square distance to the points in the set. 
 
 \begin{equation}
     f(x) = ax + b
     \label{eq:linear_function}
 \end{equation}
-
 
 \subsection{Image}
 
@@ -21,11 +20,11 @@ Each pixel of the image will be described by a vector (\ref{eq:vector_pixel_bgr}
     \vec{p}_{ij} = [B,G,R]
 \end{equation} 
 
-One whole image will be stored in a matrix where each element of the matrix is a vector described by (\ref{eq:vector_pixel_bgr}). The matrix $A_{N\cdot M}$, where $N$ is the number of rows and $M$ is the number of columns, is shown in (\ref{eq:image_matrix})
+One whole image will be stored in a matrix where each element of the matrix is a vector described by (\ref{eq:vector_pixel_bgr}). The matrix $A_{N \times M}$, where $N$ is the number of rows and $M$ is the number of columns, is shown in (\ref{eq:image_matrix})
 
 \begin{equation}
     \label{eq:image_matrix}
-    A = A_{N\cdot M} =  
+    A = A_{N \times M} =  
     \begin{bmatrix}
         \vec{p}_{11} & \vec{p}_{12} & \cdots & & \vec{p}_{1M}  \\
         \vec{p}_{21} & \ddots &        &       &                \\
@@ -43,7 +42,7 @@ A second matrix to introduce is the special case where the image is the referenc
 An important equation later is the one that takes the spatial average of the matrix, this is done with (\ref{eq:spatial_sum}).
 \begin{equation}
     \label{eq:spatial_sum}
-    \mean{\vec{p}} = \frac{1}{NM} \sum_{i=0}^{N-1} \sum_{j=0}^{M-1} \vec{p}_{ij}
+    \mean{\vec{p}} = \frac{1}{N \cdot M} \sum_{i=0}^{N-1} \sum_{j=0}^{M-1} \vec{p}_{ij}
 \end{equation}
 
 
@@ -51,14 +50,14 @@ An important equation later is the one that takes the spatial average of the mat
 Element wise division will be used to compare two pictures, and is defined by the Hadamard division \cite{HadamardDivisionInfixed}:
 \begin{equation}
     \label{eq:element_wise_division_image}
-    A \oslash  A_0  \frac{A_{ij}}{A_{0ij} } %TODO
+    A \oslash  A_0 \doteq  \frac{A_{ij}}{A_{0ij} } %TODO
 \end{equation}
 
 
 \subsection{Spectrum}
 \label{sec:spectrum}
 
-The spectrum read from the spectrometer is saved in a $C x 2$ matrix, where $C$ is the dataset length, the first column is the wavelength ($\lambda$) and the second column is the corresponding intensity (\ref{eq:intensity})
+The spectrum read from the spectrometer is saved in a $C \times 2$ matrix, where $C$ is the dataset length, the first column is the wavelength ($\lambda$) and the second column is the corresponding intensity (\ref{eq:intensity})
 \begin{equation}
     \label{eq:intensity}
     I = I(\lambda)    
@@ -69,15 +68,15 @@ The spectrum read from the spectrometer is saved in a $C x 2$ matrix, where $C$ 
     I_0 = I_0(\lambda)
 \end{equation}
 
-We will also define a value (\ref{eq:intensity_0_background}) which is $I$ for the special case where the spectrum is muffin the background spectral response without any objects. From these definitions we define relative reflectance $RR$ (\ref{eq:relative_reflectance}). 
+We will also define a value (\ref{eq:intensity_0_background}) which is $I$ at the special case where the spectrum is the background spectral response without any objects. From these definitions we define relative reflectance $RR$ (\ref{eq:relative_reflectance}). 
 
 \begin{equation}
     \label{eq:relative_reflectance}
     RR = \frac{I}{I_0}
 \end{equation}
 
+The introduction of (\ref{eq:relative_reflectance_minus_one}) will make it easier see the changes in the spectrum when multiplying with QE. It will make the wavelengths that are equal in the object-picture and the reference-picture be zero, while showing wavelengths that have gotten stronger as positive numbers and negative numbers for weaker wavelengths.  
 
-The introduction of (\ref{eq:relative_reflectance_minus_one}) will make it easier see the changes in the spectrum when multiplying with QE.  
 \begin{equation}
     \label{eq:relative_reflectance_minus_one}
     RR_2 = RR - 1
@@ -92,20 +91,19 @@ We further introduce the notion of finding the spectrum corresponding to one col
 
 This value can theoretically be used to relate the relative picture values with the relative reflectance values. This would be a major advantage as it can give us an insight into the noise factor affecting the sensor fusion.  
 
-\subsubsection{Sectral average}
+\subsubsection{Spectral average}
 \label{sec:spectral_average}
 
-The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the integral of the graph and divide it by the wavelength range (\ref{eq:average_integral}). The trapezoidal rule was used to approximate the integral \cite{TrapezoidRuleMathematical}. 
+The spectral equivalent of spatial sum (\ref{eq:spatial_sum}) is to take the integral of the graph and divide it by the wavelength range (\ref{eq:average_integral}). The trapezoidal rule will be used to approximate the integral \cite{TrapezoidRuleMathematical}. 
 
 \begin{equation}
     \label{eq:average_integral}
     \mean{\vec{RR}} = \frac{1}{\lambda_1 - \lambda_0} \int_{\lambda_0}^{\lambda_1} RR \cdot \vec{QE} \,\mathrm{d}\lambda 
 \end{equation}
 
-
 \subsubsection{Error function}
 \label{sec:error_function}
-To have an idea of how well an estimation works, an error function can be used. The function that will be used here takes the Euclidean distance between a data-point and the closest point in the estimation. The estimation will be a straight line in this setup, so the minimum distance between a point and the line can be found using the cross product. This function works by using three points, two of them should be points on the line ($p_0$ and $p_1$), and one should be the data point ($p$). The function is given in (\ref{eq:error_function}), where $\left\lVert .\right\rVert$ shows the second norm. 
+To have an idea of how well an estimation works, an error function can be used. The function that will be used here takes the Euclidean distance between a data-point and the closest point in the estimation. The estimation will be a straight line in this setup, so the minimum distance between a point and the line can be found using the cross product. This function works by using three points, two of them should be points on the line ($p_0$ and $p_1$), and one should be the data point ($p$). The function is given in (\ref{eq:error_function}), where $\left\lVert .\right\rVert$ denotes the second norm. 
 
 \begin{equation}
     \label{eq:error_function}
