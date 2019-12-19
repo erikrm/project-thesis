@@ -37,14 +37,14 @@ The process of comparing is shown in figure \ref{fig:correlating_spectrum_and_im
 \end{figure}
 
 
-\subsection{Light}
+\subsection{Light illumination}
 Light is a crucial part of this project, as it is the source of input for both the camera and the spectrometer. It's also the link between the two sensors. The choosing of a light source that can support both sensor types is therefore paramount. The camera is less selective on the spectral properties of the light source as it only requires a light source that is approximately white, i.e. have similar amounts of red, green and blue "wavelengths". It is however more selective in the spatial region as it can arise more problems for the camera if the lighting creates a lot of shadows or local problems like strong specular reflection making the pixel go into saturation. As implied the spectral properties of the light is more important for the spectrometer. For the spectrometer we want the spectrum to be as flat as possible. 
 
 %TODO: The characterization of the light source will be based on considerations from \cite{martinPracticalGuideMachine}, but also unfortunately be limited by available sources at the lab.
  % This paper provides a longer checklist, that can be simplified greatly under the following conditions: Stationary objects,
 
-\section{Experimental setup}
-The photos and spectrums where taken inside a lab with no external lights, and the real setup is as shown in figure \ref{fig:picture_of_setup_unlit}. Both the fiber and the camera points towards the black square, the camera view fits exactly in the black square. To see approximate view angle of the fiber, red light is sent through fibers laying around the core fiber. The result is figure \ref{fig:picture_of_setup_red} which show with red light the area of the acceptance cone. The red area will probably be slightly larger than the acceptance cone due to it being made by multiple fibers around the core fiber. 
+\subsection{Experimental setup}
+The photos and spectrums where taken inside a lab with no external lights, and the real setup is as shown in figure \ref{fig:photo_of_setup}. Both the fiber and the camera points towards the black square, the camera view fits exactly in the black square. To see approximate view angle of the fiber, red light is sent through fibers laying around the core fiber. The result is figure \ref{fig:picture_of_setup_red} which show with red light the area of the acceptance cone. The red area will probably be slightly larger than the acceptance cone due to it being made by multiple fibers around the core fiber. 
 
 
 \begin{figure}[h]
@@ -67,10 +67,10 @@ The photos and spectrums where taken inside a lab with no external lights, and t
         \label{fig:picture_of_setup_red}
     \end{subfigure}
     \caption{Photo of the setup used to take images and spectrums}
-    \label{fig:blue_cap_and_background}
+    \label{fig:photo_of_setup}
 \end{figure}
 
-\subsection{Utilities}
+\subsubsection{Utilities}
 The equipment used in the experiment are listed in table 
 
 %TODO make an equipment table
@@ -84,88 +84,20 @@ The equipment used in the experiment are listed in table
     \end{tabular}
 \end{table}
 
-\subsection{Image processing}
+\subsection{Experiment}
+\label{sec:experiment}
 
-To show how the processing was done, two images will be used as examples. One will be used as the reference image (figure \ref{fig:001_background}), and the other will contain an object to be analysed (figure \ref{fig:002_blue_cap}). These two images will then be sent through the process in figure \ref{fig:image_visualization_program_flow} with a noise limit of 10. 
+The experimental stage is divided into two parts, one where the images and spectrums should be taken under the best possible conditions, this is the \textbf{ideal} part. Part two of the experiment is the \textbf{unideal} part, and is divided into three parts that introduces one pertubation each.
 
-The results from the processing are the two images in figure \ref{fig:hadamard_division_blue_cap}. They have been normalized and multiplied with 255 so that it is easy to see the changes. %TODO Are they actually histogram equalized? I don't really think so, I just normalized them and multiplied with 255.
-Figure \ref{fig:002_blue_cap_positive_difference} shows what colors in what pixels have gotten more light after the blue cap was introduced. On the other hand figure \ref{fig:002_blue_cap_negative_difference} shows the colors that have gotten weaker after introducing the cap. What this means will be discussed further in section \ref{sec:blue_cap_discussion}
+\textbf{Ideal analysis.} The purpose of the experiment is to correlate spectral and spatial average under ideal conditions to see how strongly they correlate. Take 30 images and spectrums and compare them to one reference image. These images and spectrums should then be analysed as shown in \ref{sec:method_correlating_spectrum_to_camera}. Fit one linear regression line to each of three colors, then test the amount of error in this approximation. 
 
-\begin{figure}[h]
-    \begin{subfigure}{0.5\textwidth}
-        \includegraphics[width=0.9\linewidth, height=5cm]{figures/camera_pictures_png/002_blue_cap.png}
-        \caption{002 Blue cap, $A$}
-        \label{fig:002_blue_cap}
-    \end{subfigure}%
-    \begin{subfigure}{0.5\textwidth}
-        \includegraphics[width=0.9\linewidth, height=5cm]{figures/camera_pictures_png/001_background.png}
-        \caption{001 Background, $A_0$}
-        \label{fig:001_background}
-    \end{subfigure}
-    
-    \caption{The original images being used in figure \ref{fig:hadamard_division_blue_cap}}
-    \label{fig:blue_cap_and_background}
-\end{figure}
+\textbf{Unideal analysis}. The purpose here is to create an unideal situation and find what pertubations affects the results. The results shall be compared with the regression lines created in the ideal situation to see if they still fit. The three pertubations that will be introduced are:
 
-\begin{figure}[h]
-        \begin{subfigure}{0.5\textwidth}
-            \includegraphics[width=0.9\linewidth, height=5cm]{figures/processed_camera_pictures/002_blue_cap_positive_difference.png}
-            \caption{$RR'_{positive}$}
-            \label{fig:002_blue_cap_positive_difference}
-        \end{subfigure}%
-        \begin{subfigure}{0.5\textwidth}
-            \includegraphics[width=0.9\linewidth, height=5cm]{figures/processed_camera_pictures/002_blue_cap_negative_difference.png} 
-            \caption{$RR'_{negative}$}
-            \label{fig:002_blue_cap_negative_difference}
-    \end{subfigure}
-    
-    \caption{Hadamard division for the blue cap}
-    \label{fig:hadamard_division_blue_cap}
-\end{figure}
+\textbf{Ambient light.} In this setup all the light in the lab should be turned on to increase the amount of noise due to the illumination.
 
-\subsection{Spectrum processing}
+\textbf{Border of imaging area.} Here the objects should be placed so that they are only partly inside the imaging area. This should make parts of them only visible to the spectrometer, thus creating a difference in what they will be seeing. 
 
-The spectrum was analysed in a similar manner, but here it was not necessary for the sake of visualization to split it into two results. It was however needed to subtract 1 from the results so that it was easy to compare the spectrums before and after multiplying with QE to each other (\ref{eq:relative_reflectance_minus_one}). It also helped for comparison with the image. 
-The recorded spectrums for the reference image and the blue cap are shown in figure \ref{fig:blue_cap_and_reference_spectrum}. The black line is the reference background spectrum, and the blue line is the line when the blue cap is introduced. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Plots/blue_cap_original_spectrum_and_background.png}
-    \caption{Comparison of blue cap (blue) and reference specter (black)}
-    \label{fig:blue_cap_and_reference_spectrum}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Plots/quantum_effiency.png}
-    \caption{The quantum efficiency of the camera Bayer mask}
-    \label{fig:quantum_efficiency_camera}
-\end{figure}
+\textbf{Outside the imaging area.} The same object should be put inside the cameras viewpoint for every image, but a different object should be put just outside of it. It should still be inside the spectrometers view angle.
 
 
-Figure \ref{fig:blue_cap_spectrum} shows relative reflectance minus one for the blue cap. It also includes the spectrums that the camera "sees" for each color, i.e. the wavelength parts and their respective magnitudes that is taken in by the CCD sensor. They are shown in their original colors; blue, green and red. The quantum efficiency used is shown in figure \ref{fig:quantum_efficiency_camera}. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Plots/blue_cap_rr_minus_one_with_qe.png}    
-    \caption{Spectrum of blue cap}
-    \label{fig:blue_cap_spectrum}
-\end{figure}
-
-\subsection{Spatial and spectral average}
-\label{sec:spatial_and_spectral_average}
-
-To correlate the image and the spectrum, and to get a value that describes how equal what they are seeing is, the spatial and spectral average will be used. They where introduced in section \ref{sec:spatial_average} (spatial) and section \ref{sec:spectral_average} (spectral). %The idea behind using these values is that they should be linearly related to each other. %TODO1: Elaborate here while 
-
-\subsection{Discussion of process method}
-
-\subsection{Blue cap}
-\label{sec:blue_cap_discussion}
-The picture of the blue cap will be used as a basement for discussion about the image processing. 
-
-Figure \ref{fig:002_blue_cap_positive_difference} shows what colors in what pixels have gotten more light after the blue cap was introduced. It is of no surprise that blue is the dominant here, but there are also some spots that have a strong white color. This is due to the difference between specular and diffusive reflection introduced in section \ref{sec:theory_reflection}. 
-
-Specular reflection reflects in the same direction and will for that reason give a stronger signal than diffusive when it hits the camera. It will however only hit if the angle between the light source, the object and the camera is just so. It is because of the strong reflection that it appears white, all three of the color sensors have reached their limit and is given out the maximum value. Specular reflection will only appear in the $RR'_{positive}$ image. 
-
-For more diffusive parts however the light is spread in several directions and the return value to the camera is therefore weaker and it is not normal to over expose these reflections. Diffusive reflectance shows up in both $RR'_{positive}$ and $RR'_{negative}$. It is what gives us the most color to work with. 
-
+Four sets of images and spectrum sha
