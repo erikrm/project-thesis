@@ -46,19 +46,20 @@ The spectrum was analysed in a similar manner, but here it was not necessary for
 The recorded spectrums for the reference image and the blue cap are shown in figure \ref{fig:blue_cap_and_reference_spectrum}. The black line is the reference background spectrum, and the blue line is the line when the blue cap is introduced. 
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Plots/blue_cap_original_spectrum_and_background.png}
-    \caption{Comparison of blue cap (blue) and reference specter (black)}
-    \label{fig:blue_cap_and_reference_spectrum}
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{Plots/blue_cap_original_spectrum_and_background.png}
+        \caption{Comparison of blue cap (blue) and reference specter (black)}
+        \label{fig:blue_cap_and_reference_spectrum}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{Plots/quantum_effiency.png}
+        \caption{The quantum efficiency of the colors blue, green and red in the camera}
+        \label{fig:quantum_efficiency_camera}
+    \end{subfigure}
+    \caption{The blue and black graph from (a) will be divided by each other and then get multiplied with each of the three colors from (b)}
 \end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Plots/quantum_effiency.png}
-    \caption{The quantum efficiency of the camera Bayer mask}
-    \label{fig:quantum_efficiency_camera}
-\end{figure}
-
 
 Figure \ref{fig:blue_cap_spectrum} shows relative reflectance minus one for the blue cap. It also includes the spectrums that the camera "sees" for each color, i.e. the wavelength parts and their respective magnitudes that is taken in by the CCD sensor. They are shown in their original colors; blue, green and red. The quantum efficiency used is shown in figure \ref{fig:quantum_efficiency_camera}. 
 
@@ -106,21 +107,24 @@ For both the ideal and unideal cases the average error and variance of the error
 These images where taken without turning of the light in the room. And with a fluorescent stand lamp on pointing towards the measurement area. Figure \ref{fig:ambient_light_plot} shows how these data points compare to the regression lines made in the ideal situation.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Plots/spectral_vs_spatial_average_with_regression_ambient_light.png}
-    \caption{Ambient light data points compared to ideal regression line}
-    \label{fig:ambient_light_plot}
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{Plots/spectral_vs_spatial_average_with_regression_ambient_light.png}
+        \caption{Ambient light}
+        \label{fig:ambient_light_plot}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{Plots/spectral_vs_spatial_average_with_regression_boundary_objects.png}
+        \caption{Objects placed on the boundary}
+        \label{fig:boundary_objects_plot}
+    \end{subfigure}
+    \caption{Shows data points from two pertubations compared to ideal regression lines}
 \end{figure}
+
 
 \textbf{Border of imaging area}
 Objects where put so that they where only partly inside the imaging area, but could still be seen by the spectrometer. Figure \ref{fig:boundary_objects_plot} shows how these data points compare to the regression lines made in the ideal situation.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Plots/spectral_vs_spatial_average_with_regression_boundary_objects.png}
-    \caption{Objects placed on the boundary}
-    \label{fig:boundary_objects_plot}
-\end{figure}
 
 \textbf{Outside the imaging area}
 The same object where put inside the cameras viewpoint for every image, but a different object where put just outside it. It should still be inside the spectrometers view angle. Figure \ref{fig:outside_objects_plot} shows how these data points compare to the regression lines made in the ideal situation.
@@ -128,14 +132,14 @@ The same object where put inside the cameras viewpoint for every image, but a di
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{Plots/spectral_vs_spatial_average_with_regression_outside_objects.png}
-    \caption{One object inside boundary, another outside}
+    \caption{One object inside boundary, another outside.}
     \label{fig:outside_objects_plot}
 \end{figure}
 
 %\subsection{Specular reflection}
 
 \section{Discussion}
-The spatial and spectral average should be two sides of the same story, if the camera and the spectrometer are watching the same area and the conditions haven't changed between the camera taking the picture and the spectrometer taking the spectre. The purpose of taking these results where to test this postulate that was originally stated in section \ref{sec:introduction}.
+The spatial and spectral average should be comparable, if the camera and the spectrometer are watching the same area and the conditions haven't changed between the camera taking the picture and the spectrometer taking the spectre. The purpose of taking these results where to test this postulate that was originally stated in section \ref{sec:introduction}.
 
 \subsection{Blue cap}
 \label{sec:blue_cap_discussion}
@@ -152,21 +156,27 @@ Figure \ref{fig:spectral_vs_spatial_values} shows the results from 30 pictures t
 
 The error measurement given in table \ref{tb:error_estimate} shows the amount of error in the different situations. From the table we can see that the ambient light is the type of noise that is creating the most variance from the regression line. The other measurements actually show less variance which was not expected, but probably means that the acceptance cone of the spectrometer was smaller than expected, and not any bigger than the cameras acceptance cone. 
 
-\textbf{Ambient light}
+\subsection{Ambient light}
 From the results it can be inferred that the light sources where the most important in this setup. Having ambient light on made the error increase to almost twice the previous error. This can be due to: 
 \begin{itemize}
     \item More shadows are formed because light comes from other directions. 
     \item The reference picture without ambient light is very different to an image with ambient light. 
     \item The overhead lamp has many spikes in its spectrum, which could be a source of noise. 
 \end{itemize}
+In figure \ref{fig:ambient_light_plot} it seems like the data points keep a similar structure to the ideal case but with more variance. The red data points have for the most part larger values than blue and green, which can indicate that the test set was to small or not diverse enough.
 
 
-\textbf{Border of the imaging area} and \textbf{Outside the image area}
-Both of these led to smaller error than the ideal situation, which is strange. It can be due to the acceptance cone being much smaller than assumed, leading to changes outside of the black box not making any difference. This combined with the smaller change between image and reference due to the objects being placed on the border could explain the smaller error. 
+\subsection{Border of the imaging area} 
+This one led to smaller error than the ideal situation, which is strange. It can be due to the acceptance cone being much smaller than assumed, leading to changes outside of the black box not making any difference. This combined with the smaller change between image and reference due to the objects being placed on the border could explain the smaller error. From figure \ref{fig:boundary_objects_plot} there are some interesting points to note, the blue and green data points are very similar, which can mean that the samples where too homogenous and that there should have been focus on more diversity when choosing the objects. Interestingly all the red points are underneath the regression line, indicating that the spatial average in this case had a larger increase in value than the spectral average, when compared with the ideal case. 
 
-\textbf{Shadows}
+\subsection{Outside the image area}
+This one also led to smaller error than the ideal situation, which is strange. It can also be due to the acceptance cone being much smaller than assumed, leading to changes outside of the black box not making any difference. This combined with the smaller change between image and reference due to having the same object inside for each picture could explain the smaller error. It is clear from the plot in figure \ref{fig:outside_objects_plot} that there where very small differences between each set of spectrum and image. 
+
+\subsection{Shadows}
 Part of the reason that parts of the wavelength gets weaker when an object is introduced is due to shadows. If the light doesn't come from the same fiber that is also receiving the light, an object with depth will cast a shadow. The image will get affected by this and in figure \ref{fig:002_blue_cap_negative_difference} you can see a darker white around the cork. Due to using two light sources it doesn't become a complete shadow. It should be possible to recognize the shadow with image processing and remove it. For the spectrum the shadow will decrease the amplitude of the resultant spectrum, but since the shadow effectively means that the light intensity is halved for all wavelengths this shouldn't affect the form of the spectrum. The reason it should be halved is that in our images one of the two light sources have always been able to light up every point. A shadow in this case is therefore when one light source is blocked. With more heterogenous materials both light sources can be blocked. This will not be addressed here.
 
 
-
+\subsection{Noise}
+The ambient light clearly affected the experiment to a large degree, greatly increasing the error.
 The effects of the dark current \ref{sec:noise_and_dark_current} was hopefully minimized by finding the relative reflectance and introducing the noise limit into the image processing. 
+With the current setup it was impossible to detect malfunctions in the CCD sensors of both the camera and spectrometer. 
