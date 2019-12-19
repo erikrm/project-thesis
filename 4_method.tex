@@ -12,16 +12,6 @@ One problem with this method is that images can only be visualized as a set of p
 \end{figure}
 
 
-\subsection{Spectrum processing}
-\label{sec:spectrum_processing}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/thesis_program_flow.pdf}
-    \caption{Spectrum process flow}
-    \label{fig:spectrum_process_flow}
-\end{figure}
-
 \subsection{Correlating Spectrometer to Camera}
 \label{sec:method_correlating_spectrum_to_camera}
 To get an idea of how well calibrated the camera is to the spectrometer and vice versa I propose the following calculation: 
@@ -71,16 +61,19 @@ The photos and spectrums where taken inside a lab with no external lights, and t
 \end{figure}
 
 \subsubsection{Utilities}
-The equipment used in the experiment are listed in table 
+The equipment used in the experiment are listed in table \ref{tb:utilities}.
 
-%TODO make an equipment table
-\begin{table}[]
-    \begin{tabular}{lll}
-    Equipment name & Serial number & Usage \\
-                   &               &       \\
-                   &               &       \\
-                   &               &       \\
-                   &               &      
+\begin{table}[H]
+    \centering
+    \caption{Utilities used in the experiment.}
+    \label{tb:utilities}
+    \begin{tabular}{@{}llll@{}}
+    \toprule
+    Type         & Brand        & Name     & Serial number  \\ \midrule
+    Camera       & Prosillica   & GE680C   & 02-20210-06516 \\
+    Spectrometer & Ocean Optics & QE65 Pro & QEPB0198       \\
+    Fiber        & Ocean Optics &          & 727-733-2447   \\
+    White LED    & Photonic     & LED F1   & 1302438        \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -98,6 +91,3 @@ The experimental stage is divided into two parts, one where the images and spect
 \textbf{Border of imaging area.} Here the objects should be placed so that they are only partly inside the imaging area. This should make parts of them only visible to the spectrometer, thus creating a difference in what they will be seeing. 
 
 \textbf{Outside the imaging area.} The same object should be put inside the cameras viewpoint for every image, but a different object should be put just outside of it. It should still be inside the spectrometers view angle.
-
-
-Four sets of images and spectrum sha
