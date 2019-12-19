@@ -1,7 +1,7 @@
-\section{Definitions}
-This section will introduce all the math notation and equations that will be used in the paper. 
+\subsection{Definitions}
+This subsection will introduce all the math notation and equations that will be used in the paper. 
 
-\subsection{Linear regression}
+\subsubsection{Linear regression}
 \label{sec:regression}
 Linear regression is a technique to find the function of the form (\ref{eq:linear_function}) that have the minimum mean square distance to the points in the set. 
 
@@ -10,7 +10,7 @@ Linear regression is a technique to find the function of the form (\ref{eq:linea
     \label{eq:linear_function}
 \end{equation}
 
-\subsection{Image}
+\subsubsection{Image represenation}
 
 Each pixel of the image will be described by a vector (\ref{eq:vector_pixel_bgr}), where each point on the vector describes one of the colors blue (B), green (G) and red (R).  This together gives the color combination of each pixel. Each color is an unsigned integers. 
 
@@ -30,7 +30,7 @@ One whole image will be stored in a matrix where each element of the matrix is a
         \vec{p}_{21} & \ddots &        &       &                \\
         \vdots       &        &\vec{p}_{ij}&   & \vdots          \\
                      &        &        & \ddots&                  \\
-        \vec{p}_{N1} &        &        &       & \vec{p}_{NM}  
+        \vec{p}_{N1} &        &  \cdots &       & \vec{p}_{NM}  
     \end{bmatrix}
 \end{equation}
 
@@ -62,7 +62,7 @@ Element wise division will be used to compare two pictures, and is defined by th
 \end{equation}
 
 
-\subsection{Spectrum}
+\subsubsection{Spectrum}
 \label{sec:spectrum}
 
 The spectrum read from the spectrometer is saved in a $C \times 2$ matrix, where $C$ is the dataset length, the first column is the wavelength ($\lambda$) and the second column is the corresponding intensity (\ref{eq:intensity})
